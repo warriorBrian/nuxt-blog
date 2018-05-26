@@ -34,6 +34,30 @@
 
 > 采用ORM模式，熟悉Mongoose
 
+## 使用前准备
+
+> 暂时不支持后台修改用户名，后续会增加。所以需要准备工作如下：
+
+```bash
+
+# 1. 进入blog库
+
+$ use blog
+
+# 2. 插入登录用户名及密码
+
+$ db.users.insert({username:'demo',password:'626dd3c7157d6460664c3b5c3778c96c'})
+
+# 3. 用户名及密码登录
+
+用户名为：demo
+
+密码为：123456
+
+```
+
+> **特别注意：必须要先在数据库里面插入用户名及密码，否则后台无法登陆!!!**
+
 ## 用到的技术
 
 > Node.js + Koa2 + MongoDB + Mongoose + Koa-session等
