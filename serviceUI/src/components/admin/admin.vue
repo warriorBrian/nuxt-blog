@@ -6,12 +6,6 @@
             <nav-left class="navleft"></nav-left>
         </Col>
         <Col span="21" class="routerView">
-            <!-- <keep-alive>
-                <router-view v-if="$route.meta.keep_alive"></router-view>
-            </keep-alive>
-            <keep-alive>
-                <router-view v-if="!$route.meta.keep_alive"></router-view>
-            </keep-alive> -->
             <router-view></router-view>
         </Col>
     </Row>
@@ -30,19 +24,6 @@ export default {
     components:{
         NavHeader,
         NavLeft
-    },
-    mounted() {
-        // this.init();
-    },
-    methods:{
-        // init() {
-        //     let odiv = document.querySelector('.nav');
-        //     let divLeft = document.querySelector('.navleft');
-        //     divLeft.style.height = odiv.offsetHeight + 'px';
-        //     window.onresize = function () {
-        //         divLeft.style.height = odiv.offsetHeight + 'px';
-        //     }
-        // }
     }
 }
 </script>
