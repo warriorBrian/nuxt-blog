@@ -1,0 +1,143 @@
+/*博客内容*/
+@globalColor:#41b883;
+@color:#3D5064;
+.Animation(@second) {
+	transition: all ease @second;
+}
+.content-blog {	/*blog content*/
+	margin-top: 1.5rem;
+	.box-href {
+		text-decoration: none;
+		.box-card {
+			margin-bottom:1.5rem;
+		}
+		.box-title {	/*blog content title*/
+			text-decoration:none;
+			color:@color;
+			margin:0;
+			&:hover {
+				.Animation(0.5s);
+				color: @globalColor;
+			}
+		}
+		.box-icon {
+			font-size:12px;
+			padding:0.5rem 0 0.3rem 0;
+			span {
+				color:#999;
+				padding-right:0.5rem;
+			}
+		}
+		.box-content {	/*blog content text*/
+			color:#666;
+			&:hover {
+				.Animation(0.5s);
+				color:@globalColor;
+			}
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+		}
+	}
+}
+/*右侧关于我板块*/
+.about-title {
+	text-align:center;
+	position:relative;
+	font-size:20px;
+	font-weight: bold;
+	box-sizing:border-box;
+	&:before {
+		content:"";
+		width:30%;
+		height:2px;
+		background:#999;
+		position:absolute;
+		top:11px;
+		left:0;
+	}
+	&:after {
+		content:"";
+		width:30%;
+		height:2px;
+		background:#999;
+		position:absolute;
+		top:11px;
+		right:0;
+	}
+}
+
+.about-name {
+	box-sizing:border-box;
+	margin-top:1rem;
+	img {
+		width:100%;
+		background-size:cover;
+	}
+}
+
+.about-content {
+	// margin-left:3rem;
+	p {
+		color:#555555;
+		padding:2px;
+		text-indent:10px;
+		background:#F6F6F6;
+		border-radius:6px;
+	}
+}
+
+/*右侧近期文章*/
+.article {
+	margin-top:1.5rem;
+	.article-title {
+		padding:0 0 0.5rem 0;
+		display:inline;
+		border-bottom:2px solid @globalColor;
+		font-weight: bold;
+	}
+	.article-link {
+		text-decoration: none;
+		display:block;
+		padding:0.5rem 0;
+		color:#666;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		&:hover {
+			.Animation(0.7s);
+			color:@globalColor;
+		}
+	}
+}
+
+/*右侧友情链接*/
+.link {
+	.article;	/*继承*/
+	.link-title {
+		.article-title; /*继承*/
+	}
+	.link-content {
+		display:flex;
+		justify-content:start;
+		align-content:flex-end;
+		flex-wrap:wrap;
+		.link-url {
+			padding:0.2rem 0.5rem;
+			text-decoration:none;
+			color:#666;
+			&:hover {
+				.Animation(0.7s);
+				color:@globalColor;
+			}
+		}
+	}
+}
+
+/*分页*/
+.pagination {
+	text-align: center;
+}
+.el-pagination.is-background .el-pager li:not(.disabled).active {
+	background-color:#41B883;
+}
