@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 Vue.use(Vuex)
-
+/*存储登录用户名*/
 const state = {
 	tokenName:''
 }
