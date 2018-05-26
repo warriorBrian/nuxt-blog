@@ -56,11 +56,6 @@ export default {
 			this.htmlContent = render;
 			this.originalContent = value;
 		},
-		// save(value,render) {
-		// 	this.htmlContent = render;
-		// 	this.originalContent = value;
-		// 	this.insertArticle();
-		// },
 		submitArticle() {
 			this.insertArticle();
 		},
