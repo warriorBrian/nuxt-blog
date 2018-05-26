@@ -50,6 +50,8 @@ $ db.users.insert({username:'demo',password:'626dd3c7157d6460664c3b5c3778c96c'})
 
 > **特别注意：构建与运行及详情在每个目录下的readme说明,点击目录即可阅读！**
 
+> 暂不支持移动端，正在开发移动端版本中...
+
 ```shell
 
 # nuxt localhost:8081
