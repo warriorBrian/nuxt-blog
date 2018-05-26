@@ -1,6 +1,6 @@
 <template>
 <div>
-  <Menu mode="horizontal" theme="light" active-name="1" @on-select="get">
+  <Menu mode="horizontal" theme="light" active-name="1">
     <Row type="flex" justify="center">
       <Col span="23">
       <div class="nav-left">
@@ -30,9 +30,7 @@
 <script>
 export default {
     methods:{
-        get(val) {
-            console.log(val);
-        }
+
     }
 }
 </script>
