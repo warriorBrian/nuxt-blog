@@ -12,13 +12,6 @@
 	  </Row>
   </div>
 </template>
-
-<script>
-export default {
-
-}
-</script>
-
 <style lang="less" scoped>
 	.error_box {
 		margin-top:10rem;
