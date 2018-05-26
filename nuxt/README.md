@@ -44,7 +44,7 @@
 
 ## 用到的技术
 
-> Nuxt.js + Element-UI + @nuxtjs/axios + Less等 
+> Nuxt.js + Element-UI + @nuxtjs/axios + Less等
 
 ## 构建与运行
 
@@ -52,7 +52,7 @@
 # 安装依赖
 $ npm install # Or yarn install
 
-# server with hot reload at localhost:3001
+# server with hot reload at localhost:8081
 $ npm run dev
 
 # 构建与打包
