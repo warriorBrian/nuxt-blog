@@ -114,13 +114,6 @@ export default {
             this.$axios.post('/api/system').then(res=>{
                 let { constants,release,platform,hostname,type,freemem,totalmem,percentage,cpu } =res.data;
                 [this.constants,this.release,this.platform,this.hostname,this.type,this.freemem,this.totalmem,this.percentage,this.cpu] = [constants,release,platform,hostname,type,freemem,totalmem,percentage,cpu];
-                // cpu.forEach((cpu,idx,arr)=>{
-                //     var times = cpu.times;
-                //     console.log(`cpu${idx}：`);
-                //     console.log(`型号：${cpu.model}`);
-                //     console.log(`频率：${cpu.speed}MHz`);
-                //     console.log(`使用率：${((1-times.idle/(times.idle+times.user+times.nice+times.sys+times.irq))*100).toFixed(2)}%`);
-                // });
             });
         },
         changeInit() {
