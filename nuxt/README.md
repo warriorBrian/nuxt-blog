@@ -85,6 +85,10 @@ $ npm run dev
 $ npm run build
 $ npm run start
 
+# pm2 部署
+
+$ npm run prd
+
 # 静态资源打包
 $ npm run generate
 ```
