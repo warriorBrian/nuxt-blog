@@ -2,7 +2,33 @@
 
 ## 基于Nuxt.js服务器渲染(SSR)构建的个人博客系统
 
-### 线上Demo地址: [Brian's Blog](http://www.brianlee.cn)
+### 线上地址: [Brian's Blog](http://www.brianlee.cn)
+
+------
+
+## 重点(临时)说明：因Nuxt.js官方更新依赖包不稳定导致报错，如果遇到运行程序报错，比如出现：
+
+```bash
+
+No parser and no filepath given, using 'babylon' the parser now but this will throw an error in the future. Please specify a parser or a filepath so one can be inferred.
+
+```
+
+## **请按步骤下载所需文件:**
+
+```bash
+
+# 安装vue-loader@13.7.2版本
+
+$ cnpm install vue-loader@13.7.2 -D
+
+```
+
+*临时使用方法，官网迭代版本修复后将删除以上临时说明！*
+
+*影响版本:Nuxt.js v1.4.0+*
+
+------
 
 ## 环境规范：
 
