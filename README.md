@@ -4,7 +4,7 @@
 
 ### 线上地址: [Brian's Blog](http://www.brianlee.cn)
 
-### Nuxt踩坑文档: [Nuxt.js Docs](http://docs.brianlee.cn)
+### Nuxt总结文档: [Nuxt.js Docs](http://docs.brianlee.cn)
 
 ------
 
