@@ -74,25 +74,4 @@ $ npm install
 
 ## 部分效果图展示
 
-#### 首页
-
-![首页](https://dn-cnode.qbox.me/FqmNs0ws9LxLDO3SYAGnBUEYA7yT)
-
-#### 更新日志模块
-
-![更新日志模块](https://dn-cnode.qbox.me/FpsRbDm7asj3td8e8DFc80nQkXhK)
-
-
-#### 后台登录页面
-
-![后台登录页面](https://dn-cnode.qbox.me/FnThkitje2RwyxsK0wsY0I2O4VGO)
-
-#### 后台首页面
-
-![后台首页面](https://dn-cnode.qbox.me/Fp4qoJ4cobBIGC_WKbiJOGasnKf3)
-
-#### 后台发布文章
-
-![后台发布文章](https://dn-cnode.qbox.me/FkpjKIfKzwFzFvShiO56OP22DeLK)
-
-#### 后台文章列表
+#### [部分效果图文章跳转链接](https://cnodejs.org/topic/5b08e74229e6e510415b24c2)
