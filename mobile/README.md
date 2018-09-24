@@ -1,6 +1,6 @@
 # mobile-blog
 
-> brian&#39;s blog
+> brian blog
 
 ## Build Setup
 
