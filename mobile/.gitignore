@@ -1,14 +1,15 @@
-# dependencies
-node_modules
+.DS_Store
+node_modules/
+/dist/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
-# logs
-npm-debug.log
-
-# Nuxt build
-.nuxt
-
-# Nuxt generate
-dist
-
-# IDE
+# Editor directories and files
 .idea
+.nuxt
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
