@@ -15,5 +15,9 @@ module.exports = {
     'vue'
   ],
   // add your custom rules here
-  rules: {}
+  rules: {
+    "vue/html-self-closing": "off",
+    "vue/max-attributes-per-line": "off",
+    "vue/attributes-order": "off"
+  }
 }
