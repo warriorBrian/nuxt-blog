@@ -18,6 +18,7 @@ module.exports = {
   rules: {
     "vue/html-self-closing": "off",
     "vue/max-attributes-per-line": "off",
-    "vue/attributes-order": "off"
+    "vue/attributes-order": "off",
+    "vue/valid-v-on": "off"
   }
 }
