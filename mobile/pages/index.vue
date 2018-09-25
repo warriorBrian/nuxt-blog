@@ -1,59 +1,70 @@
 <template>
-  <v-layout wrap style="height: 200px;">
-    <v-container>
-      <v-layout justify-center>
-        <v-btn color="pink" dark @click.stop="drawer = !drawer">
-          Toggle
-        </v-btn>
-        <v-btn color="pink" dark @click.stop="get">
-          get
-        </v-btn>
+  <div>
+    <nav-header></nav-header>
+    <v-container style="padding:6px;">
+      <v-layout row wrap>
+        <v-flex xs12 style="margin-bottom:20px;">
+          <v-card>
+            <v-img src="https://cdn.vuetifyjs.com/images/cards/desert.jpg" aspect-ratio="2.75"></v-img>
+
+            <v-card-title primary-title>
+              <div>
+                <h3 class="headline mb-0">Kangaroo Valley Safari</h3>
+                <div>Located two hours south of Sydney in the <br>Southern Highlands of New South Wales, ...</div>
+              </div>
+            </v-card-title>
+
+            <v-card-actions>
+              <v-btn flat color="orange">Share</v-btn>
+              <v-btn flat color="orange">Explore</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-flex>
+        <v-flex xs12 style="margin-bottom:20px;">
+          <v-card>
+            <v-img src="https://cdn.vuetifyjs.com/images/cards/docks.jpg" aspect-ratio="2.75"></v-img>
+
+            <v-card-title primary-title>
+              <div>
+                <h3 class="headline mb-0">Kangaroo Valley Safari</h3>
+                <div>Located two hours south of Sydney in the <br>Southern Highlands of New South Wales, ...</div>
+              </div>
+            </v-card-title>
+
+            <v-card-actions>
+              <v-btn flat color="orange">Share</v-btn>
+              <v-btn flat color="orange">Explore</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-flex>
+        <v-flex xs12 style="margin-bottom:20px;">
+          <v-card>
+            <v-img src="https://cdn.vuetifyjs.com/images/cards/desert.jpg" aspect-ratio="2.75"></v-img>
+
+            <v-card-title primary-title>
+              <div>
+                <h3 class="headline mb-0">Kangaroo Valley Safari</h3>
+                <div>Located two hours south of Sydney in the <br>Southern Highlands of New South Wales, ...</div>
+              </div>
+            </v-card-title>
+
+            <v-card-actions>
+              <v-btn flat color="orange">Share</v-btn>
+              <v-btn flat color="orange">Explore</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-flex>
       </v-layout>
     </v-container>
-
-    <v-navigation-drawer v-model="drawer" :mini-variant="mini" absolute temporary>
-      <v-list class="pa-1">
-        <v-list-tile v-if="mini" @click.stop="mini = !mini">
-          <v-list-tile-action>
-            <v-icon>chevron_right</v-icon>
-          </v-list-tile-action>
-        </v-list-tile>
-
-        <v-list-tile avatar tag="div">
-          <v-list-tile-avatar>
-            <img src="https://randomuser.me/api/portraits/men/85.jpg">
-          </v-list-tile-avatar>
-
-          <v-list-tile-content>
-            <v-list-tile-title>John Leider</v-list-tile-title>
-          </v-list-tile-content>
-
-          <v-list-tile-action>
-            <v-btn icon @click.stop="mini = !mini">
-              <v-icon>chevron_left</v-icon>
-            </v-btn>
-          </v-list-tile-action>
-        </v-list-tile>
-      </v-list>
-
-      <v-list class="pt-0" dense>
-        <v-divider light></v-divider>
-
-        <v-list-tile v-for="item in items" :key="item.title" @click="">
-          <v-list-tile-action>
-            <v-icon>{{ item.icon }}</v-icon>
-          </v-list-tile-action>
-
-          <v-list-tile-content>
-            <v-list-tile-title>{{ item.title }}</v-list-tile-title>
-          </v-list-tile-content>
-        </v-list-tile>
-      </v-list>
-    </v-navigation-drawer>
-  </v-layout>
+  </div>
 </template>
 <script>
+import { mapState } from 'vuex'
+import NavHeader from '~/components/common/NavHeader'
 export default {
+  components: {
+    NavHeader
+  },
   data () {
     return {
       drawer: null,
@@ -63,6 +74,15 @@ export default {
       ],
       mini: false,
       right: null
+    }
+  },
+  computed: {
+    ...mapState(['count'])
+  },
+  methods: {
+    async get () {
+      // let {data} = await this.$axios.get('https://api.github.com/repos/warriorBrian/nuxt-blog')
+      // console.log(data)
     }
   }
 }
