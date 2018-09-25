@@ -64,9 +64,6 @@ export default {
       mini: false,
       right: null
     }
-  },
-  methods: {
-
   }
 }
 </script>
