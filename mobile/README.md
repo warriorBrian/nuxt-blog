@@ -8,7 +8,7 @@
 # install dependencies
 $ yarn install
 
-# serve with hot reload at localhost:3000
+# serve with hot reload at port:8080
 $ yarn run dev
 
 # build for production and launch server
@@ -19,4 +19,6 @@ $ yarn start
 $ yarn run generate
 ```
 
-For detailed explanation on how things work, checkout [Nuxt.js docs](https://nuxtjs.org).
+# 移动端正在开发中。
+
+# Under construction...
