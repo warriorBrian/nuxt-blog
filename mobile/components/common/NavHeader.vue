@@ -3,7 +3,7 @@
     <!--头部导航栏-->
     <v-toolbar :fixed="true">
       <v-btn icon>
-        <i class="icon iconfont icon-github" v-if="$route.name === 'index'"></i>
+        <i class="icon iconfont icon-github" v-if="$route.name === 'index'" @click="hrefGitHub"></i>
         <i class="icon iconfont icon-fanhui" @click="$router.back(-1)" v-else></i>
       </v-btn>
       <!--<v-toolbar-side-icon />-->
@@ -82,6 +82,9 @@ export default {
   methods: {
     get (title) {
       this.$router.push({name: title})
+    },
+    hrefGitHub () {
+      window.open('https://github.com/warriorBrian/nuxt-blog')
     }
   }
 }
