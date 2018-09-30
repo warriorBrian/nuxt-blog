@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import { Button,Row,Col,Menu,MenuItem,Icon,Layout,Sider,Submenu,MenuGroup,Input,DatePicker,Card,RadioGroup,Radio,Notice,Tag,Table,Page,Modal,Message,Circle } from 'iview'
+import { Button,Row,Col,Menu,MenuItem,Upload,Icon,Layout,Sider,Submenu,MenuGroup,Input,DatePicker,Card,RadioGroup,Radio,Notice,Tag,Table,Page,Modal,Message,Circle,Poptip } from 'iview'
 import 'iview/dist/styles/iview.css'
 import mavonEditor from 'mavon-editor'
 import 'mavon-editor/dist/css/index.css'
@@ -31,6 +31,8 @@ Vue.component('Table',Table)
 Vue.component('Page',Page)
 Vue.component('Modal',Modal)
 Vue.component('i-circle',Circle);
+Vue.component('Poptip',Poptip);
+Vue.component('Upload',Upload);
 Vue.prototype.$Notice = Notice;
 Vue.prototype.$Message = Message;
 /* eslint-disable no-new */

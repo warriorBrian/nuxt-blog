@@ -7,7 +7,6 @@
 
 			<label for="title" class="article">文章简介</label>
 			<Input v-model="des" size="large" placeholder="在此输入文章标题" name="title" class="article_title"></Input>
-
 			<mavon-editor @change="changeContent" class="article_content" v-model="content" fontSize="18px" placeholder="开始编写文章内容..." style="min-height:600px;" />
 			<Button type="success" class="article_button" @click="submitArticle">发布文章</Button>
 		</Col>
