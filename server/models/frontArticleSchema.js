@@ -7,7 +7,9 @@ let articleSchema = new mongoose.Schema({
 	content:String,
 	original:String,
 	des:String,
-	list:String
+	list:String,
+    banner: String,
+    imgFileName: String
 });
 
 let articleModel = db.model('frontArticle',articleSchema);
