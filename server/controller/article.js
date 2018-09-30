@@ -1,4 +1,5 @@
 const frontArticle = require('../models/frontArticleSchema');
+const fs = require('fs');
 /**
  * private API
  * @method insert
@@ -76,8 +77,61 @@ let articleInfo = async (ctx,next)=>{
 	}
 }
 
+const uploadFile = async (ctx) => {
+    try {
+				let req = ctx.req.body;
+        let file = ctx.req.file
+        let path = `http://${ctx.headers.host}/uploads/${file.filename}`
+        let result = await frontArticle.update({_id: req.id }, {$set: {banner: path, imgFileName:file.filename}},{upsert:true})
+        ctx.status = 200
+        ctx.body = {
+            status: ctx.status,
+            filename: file.filename,
+            path
+        }
+    } catch (error) {
+        ctx.body = error
+    }
+}
+
+const findOneArticle = async (ctx) => {
+	try {
+		let req = ctx.request.body;
+    let result = await frontArticle.findOne({_id: req.id})
+    ctx.body = {
+      error:0,
+      info: result
+    }
+  } catch (error) {
+    ctx.body = {
+      error: 1,
+      info: error
+    }
+  }
+}
+
+const deleteFile = async (ctx) => {
+    try {
+        let request = ctx.request.body
+        let { imgFileName } = await frontArticle.findById({_id: request.id});
+        let path = `${process.cwd()}/public/uploads/${imgFileName}`;
+        await fs.unlinkSync(path)
+        let result = await frontArticle.update({_id: request.id }, {$unset: {banner: -1, imgFileName:-1}})
+        ctx.status = 200
+        ctx.body = {
+            status: ctx.status,
+            result
+        }
+    } catch (error) {
+        ctx.body = error
+    }
+}
+
 module.exports = {
 	insertArticle,
 	getArticle,
-	articleInfo
+	articleInfo,
+  uploadFile,
+	deleteFile,
+	findOneArticle
 }
