@@ -4,7 +4,7 @@ const backArticle = require('../models/backArticleSchema');
  * @return {object|null}  insert Back article
 */
 
-let insertArticle = async (ctx,next) => {
+let insertArticle = async (ctx) => {
 	try{
 		let req = ctx.request.body;
 		let {title,content,date,des,original,list} = req;
