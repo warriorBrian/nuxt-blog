@@ -1,4 +1,5 @@
 const frontArticle = require('../models/frontArticleSchema');
+const backArticle = require('../models/backArticleSchema');
 const fs = require('fs');
 /**
  * private API
@@ -7,7 +8,7 @@ const fs = require('fs');
  * @return {object|null}  insert Front article
 */
 
-let insertArticle = async (ctx,next) => {
+let insertArticle = async (ctx) => {
 	try{
 		let req = ctx.request.body;
 		let {title,content,date,des,original,list} = req;
@@ -77,17 +78,26 @@ let articleInfo = async (ctx,next)=>{
 	}
 }
 
+/**
+ *private API
+ *@param {string|null} id
+ *@param {string|null} radio
+ *@return {object} return upload list
+ */
+
 const uploadFile = async (ctx) => {
     try {
-				let req = ctx.req.body;
-        let file = ctx.req.file
+        let req = ctx.req.body;
+        let file = ctx.req.file;
+        let db = await Object.is(req.radio, 'Front') ? frontArticle : backArticle
         let path = `http://${ctx.headers.host}/uploads/${file.filename}`
-        let result = await frontArticle.update({_id: req.id }, {$set: {banner: path, imgFileName:file.filename}},{upsert:true})
+        let result = await db.update({_id: req.id }, {$set: {banner: path, imgFileName:file.filename}},{upsert:true})
         ctx.status = 200
         ctx.body = {
             status: ctx.status,
             filename: file.filename,
-            path
+            path,
+            result
         }
     } catch (error) {
         ctx.body = error
@@ -96,27 +106,34 @@ const uploadFile = async (ctx) => {
 
 const findOneArticle = async (ctx) => {
 	try {
-		let req = ctx.request.body;
-    let result = await frontArticle.findOne({_id: req.id})
+	    let req = ctx.request.body;
+        let db = await Object.is(req.radio, 'Front') ? frontArticle : backArticle
+        let result = await db.findOne({_id:req.id})
     ctx.body = {
       error:0,
-      info: result
+      result
     }
   } catch (error) {
     ctx.body = {
       error: 1,
-      info: error
+      error
     }
   }
 }
-
+/**
+ *private API
+ *@param {string|null} id
+ *@param {string|null} radio
+ *@return {object} return deleteFile
+ */
 const deleteFile = async (ctx) => {
     try {
         let request = ctx.request.body
-        let { imgFileName } = await frontArticle.findById({_id: request.id});
+        let db = await Object.is(request.radio, 'Front') ? frontArticle : backArticle
+        let { imgFileName } = await db.findById({_id: request.id});
         let path = `${process.cwd()}/public/uploads/${imgFileName}`;
         await fs.unlinkSync(path)
-        let result = await frontArticle.update({_id: request.id }, {$unset: {banner: -1, imgFileName:-1}})
+        let result = await db.update({_id: request.id }, {$unset: {banner: -1, imgFileName:-1}})
         ctx.status = 200
         ctx.body = {
             status: ctx.status,
@@ -126,12 +143,11 @@ const deleteFile = async (ctx) => {
         ctx.body = error
     }
 }
-
 module.exports = {
 	insertArticle,
 	getArticle,
 	articleInfo,
-  uploadFile,
+    uploadFile,
 	deleteFile,
 	findOneArticle
 }
