@@ -23,7 +23,7 @@
 	              </div>
 	              <div v-else>
 	                <h3 style="text-align: center;">上传Banner图</h3>
-	                <Upload multiple type="drag" :on-success="uploadSuccess" :on-error="uploadError" :data="{id: $route.params.id}" action="http://localhost:3000/api/upload" :show-upload-list="false" :format="['jpg','jpeg','png']">
+	                <Upload multiple type="drag" :on-success="uploadSuccess" :on-error="uploadError" :data="{id: $route.params.id, radio: collections.radio}" action="http://api.brianlee.cn/api/upload" :show-upload-list="false" :format="['jpg','jpeg','png']">
 	                  <div style="padding: 20px 0">
 	                    <Icon type="ios-cloud-upload" size="52" style="color: #3399ff"></Icon>
 	                    <p>点击上传或拖拽上传Banner图</p>
@@ -53,10 +53,10 @@
 			            <Icon class="iconfont icon-nodejs"></Icon>
 			            <span class="list_menu">后端开发</span>
 			        </Radio>
-			        <Radio label="about-me">
-			            <Icon class="iconfont icon-guanyuwomen"></Icon>
-			            <span class="list_menu">关于我</span>
-			        </Radio>
+			        <!--<Radio label="about-me">-->
+			            <!--<Icon class="iconfont icon-guanyuwomen"></Icon>-->
+			            <!--<span class="list_menu">关于我</span>-->
+			        <!--</Radio>-->
 			    </RadioGroup>
             </Card>
 		</Col>
@@ -73,9 +73,9 @@ export default {
 				htmlContent:'',
 				date:FormatDate(new Date()),
 				radio:'',
-	            contentValue:'',
-	            des:'',
-	            original:'',
+        contentValue:'',
+        des:'',
+        original:'',
 				id: ''
 			},
 			img: {
@@ -84,18 +84,19 @@ export default {
 	        }
 		}
 	},
-    created() {
+  created() {
 		this.init();
-    },
-	mounted () {
-		this.defaultRequest();
-	},
+  },
+	// mounted () {
+	// 	this.defaultRequest();
+	// },
 	methods:{
         init() {
             let id = this.$route.params.id;
             this.$axios.get('/api/article/update',{params:{id}}).then(res=>{
-				let {data:[{_id, title, des, original, time, list}]} = res
-				Object.assign(this.collections, {id: _id, title, des, content:original, date:time, radio: list})
+				      let {data:[{_id, title, des, original, time, list}]} = res
+				      Object.assign(this.collections, {id: _id, title, des, content:original, date:time, radio: list})
+              this.defaultRequest()
             });
         },
 		uploadSuccess (file) {
@@ -112,7 +113,7 @@ export default {
 		async confirmDelete () {
       /* 删除 */
 	      try {
-	        let {data: {status, result: {nModified}}} = await this.$axios.post('/api/deleteFile', {id: this.$route.params.id})
+	        let {data: {status, result: {nModified}}} = await this.$axios.post('/api/deleteFile', {id: this.$route.params.id, radio: this.collections.radio})
 	        if (Object.is(status, 200)) {
 	          this.defaultRequest()
 	          this.success(`删除成功`, `删除${nModified}个文件`, false)
@@ -123,21 +124,23 @@ export default {
 	    },
 	    async defaultRequest () {
 	      /* 获取显示图片 */
-	      let {data: {info: {banner, imgFileName}}} = await this.$axios.post('/api/findOneArticle', {id: this.$route.params.id})
-		  console.log(banner)
-	      Object.assign(this.img, {path: banner, filename: imgFileName})
+	      let {data: {result}} = await this.$axios.post('/api/findOneArticle', {id: this.$route.params.id, radio: this.collections.radio})
+        if (Object.is(result.banner, undefined)) {
+          Object.assign(this.img, {path: '', filename: ''})
+        } else {
+          Object.assign(this.img, {path: result.banner, filename: result.imgFileName})
+        }
 	  	},
 		save(value,render) {
 			this.htmlContent = render;
-            this.original = value;
-            console.log(this.contentValue);
+      this.original = value;
 			this.submitArticle();
 		},
 		submitArticle() {
 			if (this.title == '') {
 				this.error('文章标题留空无法保存','请仔细检查文章标题',false);
 			}else{
-                this.$axios.post(`/api/article/insert${this.collections.radio}`,this.collections).then(res=>{
+          this.$axios.post(`/api/article/insert${this.collections.radio}`,this.collections).then(res=>{
 					let {error} =res.data;
 					if (Object.is(error,0)) {
 						this.success('修改成功','',true);
