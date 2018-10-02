@@ -26,10 +26,10 @@
 			            <Icon class="iconfont icon-nodejs"></Icon>
 			            <span class="list_menu">后端开发</span>
 			        </Radio>
-			        <Radio label="about-me">
-			            <Icon class="iconfont icon-guanyuwomen"></Icon>
-			            <span class="list_menu">关于我</span>
-			        </Radio>
+			        <!--<Radio label="about-me">-->
+			            <!--<Icon class="iconfont icon-guanyuwomen"></Icon>-->
+			            <!--<span class="list_menu">关于我</span>-->
+			        <!--</Radio>-->
 			    </RadioGroup>
             </Card>
 		</Col>

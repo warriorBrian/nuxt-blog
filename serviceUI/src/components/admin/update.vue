@@ -23,7 +23,7 @@
 	              </div>
 	              <div v-else>
 	                <h3 style="text-align: center;">上传Banner图</h3>
-	                <Upload multiple type="drag" :on-success="uploadSuccess" :on-error="uploadError" :data="{id: $route.params.id, radio: collections.radio}" action="http://api.brianlee.cn/api/upload" :show-upload-list="false" :format="['jpg','jpeg','png']">
+	                <Upload multiple type="drag" :on-success="uploadSuccess" :on-error="uploadError" :data="{id: $route.params.id, radio: collections.radio}" action="http://localhost:3000/api/upload" :show-upload-list="false" :format="['jpg','jpeg','png']">
 	                  <div style="padding: 20px 0">
 	                    <Icon type="ios-cloud-upload" size="52" style="color: #3399ff"></Icon>
 	                    <p>点击上传或拖拽上传Banner图</p>
