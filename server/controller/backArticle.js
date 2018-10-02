@@ -7,8 +7,8 @@ const backArticle = require('../models/backArticleSchema');
 let insertArticle = async (ctx) => {
 	try{
 		let req = ctx.request.body;
-		let {title,content,date,des,original,list} = req;
-		const front = await backArticle.update({title},{$set:{title,content,time:date,des,original,list}},{upsert:true});
+		let {title,htmlContent,date,des,original,radio} = req;
+		const front = await backArticle.update({title},{$set:{title,content:htmlContent,time:date,des,original,list:radio}},{upsert:true});
 		let {ok} = front;
 		ctx.body = {
 			error:0,
