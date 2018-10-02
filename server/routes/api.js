@@ -36,7 +36,8 @@ router.get('/article/getBackArticleInfo',backArticle.articleInfo);
 router.get('/article/update',update.update);
 router.post('/article/updateContent',update.updateContent);
 /*文章列表接口*/
-router.get('/article/list',articleList.list);
+router.get('/article/frontList',articleList.frontList);
+router.get('/article/backList',articleList.backList);
 /*删除文章接口*/
 router.post('/article/delArticle',del.delArticle);
 /*发布版本接口*/
@@ -49,6 +50,7 @@ router.post('/login',LoginStrategy.login);
 router.post('/system',system.controller);
 /*上传接口*/
 router.post('/upload',upload.single('file'), frontArticle.uploadFile);
+/*删除图片接口*/
 router.post('/deleteFile', frontArticle.deleteFile)
 /*查询单文章*/
 router.post('/findOneArticle', frontArticle.findOneArticle)
