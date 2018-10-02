@@ -95,6 +95,7 @@ export default {
             let id = this.$route.params.id;
             this.$axios.get('/api/article/update',{params:{id}}).then(res=>{
 				      let {data:[{_id, title, des, original, time, list}]} = res
+              console.log(res.data)
 				      Object.assign(this.collections, {id: _id, title, des, content:original, date:time, radio: list})
               this.defaultRequest()
             });
@@ -107,8 +108,8 @@ export default {
 	      this.error(`出现错误`, `错误信息：${error},${file}`, false)
 	    },
 		changeContent(value,render) {
-			this.htmlContent = render;
-            this.original = value;
+			this.collections.htmlContent = render;
+      this.collections.original = value;
 		},
 		async confirmDelete () {
       /* 删除 */
@@ -132,8 +133,8 @@ export default {
         }
 	  	},
 		save(value,render) {
-			this.htmlContent = render;
-      this.original = value;
+      this.collections.htmlContent = render;
+      this.collections.original = value;
 			this.submitArticle();
 		},
 		submitArticle() {
@@ -142,6 +143,7 @@ export default {
 			}else{
           this.$axios.post(`/api/article/insert${this.collections.radio}`,this.collections).then(res=>{
 					let {error} =res.data;
+					console.log(res.data)
 					if (Object.is(error,0)) {
 						this.success('修改成功','',true);
 					}else {

@@ -76,11 +76,11 @@ export default {
 		insertArticle() {
 			let param = {
 				title:this.title,
-				content:this.htmlContent,
+				htmlContent:this.htmlContent,
 				date:this.date,
 				des:this.des,
 				original:this.originalContent,
-				list:this.radio
+				radio:this.radio
 			}
 			if (this.title == '') {
 				this.error('文章标题留空无法保存','请仔细检查文章标题',false);
