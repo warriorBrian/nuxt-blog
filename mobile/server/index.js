@@ -4,7 +4,7 @@ const consola = require('consola')
 const { Nuxt, Builder } = require('nuxt')
 
 const app = new Koa()
-const host = process.env.HOST || '192.168.5.101'
+const host = process.env.HOST || '192.168.0.101'
 const port = process.env.PORT || 8080
 
 // Import and Set Nuxt.js options

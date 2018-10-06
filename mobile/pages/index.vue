@@ -4,13 +4,18 @@
     <v-container style="padding:7px;">
       <v-layout row wrap>
         <v-flex xs12 style="margin-bottom:20px;" v-for="item in list" :key="item._id">
-          <v-card color="blue-grey lighten-2" class="white--text">
+          <!--card list start-->
+          <v-card>
+            <v-img :lazy-src="item.banner" :src="item.banner" aspect-ratio="2.75" height="200" v-show="item.banner"></v-img>
             <v-card-title primary-title>
-              <div class="title article_title">{{ item.title }}</div>
-              <div class="article_des">{{ item.des }}</div>
-              <i class="icon iconfont icon-rili"></i><div class="article_time">{{ item.time }}</div>
+              <div>
+                <h3 class="headline mb-0">{{ item.title }}</h3>
+                <div style="display:flex;align-items:center;margin:1rem 0 0 0;"><i class="icon iconfont icon-rili"></i><div class="article_time">{{ item.time }}</div></div>
+                <div class="article_des grey--text">{{ item.des }}</div>
+              </div>
             </v-card-title>
           </v-card>
+          <!--card list end-->
         </v-flex>
       </v-layout>
     </v-container>
@@ -31,13 +36,14 @@ export default {
         { title: 'About', icon: 'question_answer' }
       ],
       mini: false,
-      right: null
+      right: null,
+      show: false
     }
   },
   async asyncData ({ app }) {
     try {
-      let showPage = {page:1, pagesize: 3}
-      let {data: {list}} = await app.$axios.get('http://api.brianlee.cn/api/article/getFrontArticle', {params: showPage})
+      let showPage = {page:1, pagesize: 6}
+      let {data: {list}} = await app.$axios.get('/api/article/getFrontArticle', {params: showPage})
       return { list }
     } catch (e) {
       console.log(e)
@@ -54,16 +60,17 @@ export default {
   }
 }
 </script>
-<style>
-  .article_title {
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow:ellipsis;
-  }
+<style lang="css">
   .article_des {
     margin:0.7rem 0;
     line-height:1.6rem;
-    text-indent: 1rem;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    display:-webkit-box;
+    /* autoprefixer: off */
+    -webkit-box-orient:vertical;
+    /* autoprefixer: on */
+    -webkit-line-clamp:2;
   }
   .icon-rili {
     font-size:12px;

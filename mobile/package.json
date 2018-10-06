@@ -13,11 +13,11 @@
     "precommit": "npm run lint"
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "cross-env": "^5.2.0",
-    "nuxt": "^2.0.0",
     "koa": "^2.5.2",
-    "vuetify": "^1.2.4",
-    "@nuxtjs/axios": "^5.0.0"
+    "nuxt": "^2.0.0",
+    "vuetify": "^1.2.4"
   },
   "devDependencies": {
     "nodemon": "^1.11.0",
