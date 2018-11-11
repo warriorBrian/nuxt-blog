@@ -6,19 +6,19 @@
 
 ``` bash
 # install dependencies
-$ yarn install
+$ npm install
 
 # serve with hot reload at port:8080
-$ yarn run dev
+$ npm run dev
 
 # build for production and launch server
-$ yarn run build
-$ yarn start
+$ npm run build
+$ npm start
 
 # generate static project
-$ yarn run generate
+$ npm run generate
 ```
 
-# 移动端正在开发中。
+## :construction: 移动端正在开发中...
 
-# Under construction...
+## :construction: Under construction...
