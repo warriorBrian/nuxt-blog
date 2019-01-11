@@ -21,63 +21,64 @@
 </template>
 <script>
 import store from '@/vuex/store'
-import {mapState,mapMutations} from 'vuex'
+import {mapState, mapMutations} from 'vuex'
 export default {
-    data(){
-        return{
-            username:'',
-            password:''
-        }
-    },
-    mounted() {
-        // 如果存在不需要重复登陆
-        let storage = window.sessionStorage;
-        this.setUserName(storage.getItem('username'));
-        let store = this.$store.state.tokenName;
-        if (!store) {
-            this.$router.push({name:'Index'});
-        }else {
-            this.$router.push({name:'admin'});
-        }
-    },
-    methods:{
-        // 设置用户名vuex方法
-        ...mapMutations(['setUserName']),
-        login(username,password) {
-            let json = {username,password};
-            this.$axios.post('/api/login',json).then(res=>{
-                let {error,username,msg} = res.data;
-                if (Object.is(error,0)) {
-                    let storage = window.sessionStorage;  //初始化sessionStorage
-                    storage.setItem('username',username);
-                    this.setUserName(storage.getItem('username'));
-                    this.$router.push({name:'admin'});
-                }else if(Object.is(error,1)) {
-                    this.error('用户名错误',msg,false);
-                }else {
-                    this.error('密码错误',msg,false);
-                }
-            });
-        },
-        error (title,content,nodesc) {
-            this.$Notice.error({
-                title: title,
-                desc: nodesc ? '' : content
-            });
-        }
-    },
-    store,
-    computed:{
-      ...mapState(['tokenName'])
+  data () {
+    return {
+      username: '',
+      password: ''
     }
+  },
+  mounted () {
+    // 如果存在不需要重复登陆
+    let storage = window.sessionStorage
+    this.setUserName(storage.getItem('username'))
+    let store = this.$store.state.tokenName
+    if (!store) {
+      this.$router.push({name: 'Index'})
+    } else {
+      this.$router.push({name: 'admin'})
+    }
+  },
+  methods: {
+    // 设置用户名vuex方法
+    ...mapMutations(['setUserName']),
+    login (username, password) {
+      let json = {username, password}
+      this.$axios.post('/api/login', json).then(res => {
+        let {error, username, msg} = res.data
+        if (Object.is(error, 0)) {
+          // 初始化sessionStorage
+          let storage = window.sessionStorage
+          storage.setItem('username', username)
+          this.setUserName(storage.getItem('username'))
+          this.$router.push({name: 'admin'})
+        } else if (Object.is(error, 1)) {
+          this.error('用户名错误', msg, false)
+        } else {
+          this.error('密码错误', msg, false)
+        }
+      })
+    },
+    error (title, content, nodesc) {
+      this.$Notice.error({
+        title: title,
+        desc: nodesc ? '' : content
+      })
+    }
+  },
+  store,
+  computed: {
+    ...mapState(['tokenName'])
+  }
 }
 </script>
 <style lang="less">
-    .login_images {
-        width:100%;
-        height:100vh;
-        background:url('/static/images/login.jpeg') no-repeat;
-        background-size:cover;
-        background-position: center center;
-    }
+  .login_images {
+    width:100%;
+    height:100vh;
+    background:url('/static/images/login.jpeg') no-repeat;
+    background-size:cover;
+    background-position: center center;
+  }
 </style>

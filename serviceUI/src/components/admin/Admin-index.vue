@@ -78,48 +78,48 @@
 
 <script>
 export default {
-    data() {
-        return{
-            constants:null,
-            release:null,
-            platform:null,
-            hostname:null,
-            type:null,
-            freemem:null,
-            totalmem:null,
-            percentage:null,
-            cpu:[],
-            columns: [
-                {
-                    title: 'CPU内核模型',
-                    key: 'model',
-                },
-                {
-                    title: 'CPU频率(GHz)',
-                    key: 'speed'
-                },
-                {
-                    title:'CPU执行模式[毫秒]( user:用户 | nice:良好 | sys:系统 | idle:空闲 | irq:中断 )',
-                    key:'times'
-                }
-            ]
-        }
-    },
-    created(){
-        this.init();
-        console.log(process.env.NODE_ENV);
-    },
-    methods:{
-        init() {
-            this.$axios.post('/api/system').then(res=>{
-                let { constants,release,platform,hostname,type,freemem,totalmem,percentage,cpu } =res.data;
-                [this.constants,this.release,this.platform,this.hostname,this.type,this.freemem,this.totalmem,this.percentage,this.cpu] = [constants,release,platform,hostname,type,freemem,totalmem,percentage,cpu];
-            });
+  data () {
+    return {
+      constants: null,
+      release: null,
+      platform: null,
+      hostname: null,
+      type: null,
+      freemem: null,
+      totalmem: null,
+      percentage: null,
+      cpu: [],
+      columns: [
+        {
+          title: 'CPU内核模型',
+          key: 'model'
         },
-        changeInit() {
-            this.init();
+        {
+          title: 'CPU频率(GHz)',
+          key: 'speed'
+        },
+        {
+          title: 'CPU执行模式[毫秒]( user:用户 | nice:良好 | sys:系统 | idle:空闲 | irq:中断 )',
+          key: 'times'
         }
+      ]
     }
+  },
+  created () {
+    this.init()
+    console.log(process.env.NODE_ENV)
+  },
+  methods: {
+    init () {
+      this.$axios.post('/api/system').then(res => {
+        let { constants, release, platform, hostname, type, freemem, totalmem, percentage, cpu } = res.data;
+        [this.constants, this.release, this.platform, this.hostname, this.type, this.freemem, this.totalmem, this.percentage, this.cpu] = [constants, release, platform, hostname, type, freemem, totalmem, percentage, cpu]
+      })
+    },
+    changeInit () {
+      this.init()
+    }
+  }
 }
 </script>
 

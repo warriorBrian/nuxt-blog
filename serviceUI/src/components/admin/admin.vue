@@ -16,15 +16,15 @@
 import NavHeader from '@/components/admin/NavHeader'
 import NavLeft from '@/components/admin/NavLeft'
 export default {
-    data() {
-        return {
-            value:''
-        }
-    },
-    components:{
-        NavHeader,
-        NavLeft
+  data () {
+    return {
+      value: ''
     }
+  },
+  components: {
+    NavHeader,
+    NavLeft
+  }
 }
 </script>
 <style lang="less">
