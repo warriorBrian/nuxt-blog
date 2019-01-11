@@ -8,8 +8,7 @@ import 'mavon-editor/dist/css/index.css'
 import Axios from 'axios'
 import store from '@/vuex/store'
 import commonPlugin from '@/plugins'
-// Axios.defaults.baseURL = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'http://api.brianlee.cn';
-Axios.defaults.baseURL = process.env.NODE_ENV === 'development' ? 'http://api.brianlee.cn' : 'http://api.brianlee.cn'
+Axios.defaults.baseURL = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'http://api.brianlee.cn'
 Vue.config.productionTip = false
 Vue.prototype.$axios = Axios
 Vue.use(mavonEditor)
