@@ -1,13 +1,5 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Index from '@/components/Index'
-import Admin from '@/components/admin/admin.vue'
-import AdminIndex from '@/components/admin/Admin-index.vue'
-import Article from '@/components/admin/Article.vue'
-import Update from '@/components/admin/update.vue'
-import ArticleList from '@/components/admin/ArticleList.vue'
-import Version from '@/components/admin/Version.vue'
-import NoFound from '@/components/NoFound.vue'
 Vue.use(Router)
 
 export default new Router({
@@ -16,49 +8,49 @@ export default new Router({
     {
       path: '/',
       name: 'Index',
-      component: Index,
+      component: () => import(/* webpackChunkName: 'index' */ '@/components/Index'),
       meta: {requireAuth: false}
     },
     {
       path: '/admin',
-      component: Admin,
+      component: () => import(/* webpackChunkName: 'admin' */ '@/components/admin/admin.vue'),
       meta: {requireAuth: true},
       children: [
         {
           path: '/admin/',
           name: 'admin',
-          component: AdminIndex,
+          component: () => import(/* webpackChunkName: 'Admin-index' */ '@/components/admin/Admin-index.vue'),
           meta: {requireAuth: true}
         },
         {
           path: 'article',
           name: 'article',
-          component: Article,
+          component: () => import(/* webpackChunkName: 'article' */ '@/components/admin/Article.vue'),
           meta: {keepAlive: true, requireAuth: true}
         },
         {
           path: 'article/:id',
           name: 'update',
-          component: Update,
+          component: () => import(/* webpackChunkName: 'update' */ '@/components/admin/update.vue'),
           meta: {requireAuth: true}
         },
         {
           path: 'list',
           name: 'articleList',
-          component: ArticleList,
+          component: () => import(/* webpackChunkName: 'articleList' */ '@/components/admin/ArticleList.vue'),
           meta: {requireAuth: true}
         },
         {
           path: 'version',
           name: 'version',
-          component: Version,
+          component: () => import(/* webpackChunkName: 'version' */ '@/components/admin/Version.vue'),
           meta: {requireAuth: true}
         }
       ]
     },
     {
       path: '*',
-      component: NoFound,
+      component: () => import(/* webpackChunkName: 'noFound' */ '@/components/NoFound.vue'),
       meta: {
         title: '404未找到'
       }

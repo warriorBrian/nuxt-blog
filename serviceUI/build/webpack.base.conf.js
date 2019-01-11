@@ -18,6 +18,7 @@ module.exports = {
   output: {
     path: config.build.assetsRoot,
     filename: '[name].js',
+    chunkFilename: 'js/[name]-[chunkhash:8].js',
     publicPath: process.env.NODE_ENV === 'production'
       ? config.build.assetsPublicPath
       : config.dev.assetsPublicPath
@@ -26,7 +27,7 @@ module.exports = {
     extensions: ['.js', '.vue', '.json'],
     alias: {
       'vue$': 'vue/dist/vue.esm.js',
-      '@': resolve('src'),
+      '@': resolve('src')
     }
   },
   module: {
