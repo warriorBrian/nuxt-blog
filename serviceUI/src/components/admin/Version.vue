@@ -42,18 +42,6 @@ export default {
           this.error('发布失败', '未知原因', false)
         }
       })
-    },
-    error (title, content, nodesc) {
-      this.$Notice.error({
-        title: title,
-        desc: nodesc ? '' : content
-      })
-    },
-    success (title, content, nodesc) {
-      this.$Notice.success({
-        title: title,
-        desc: nodesc ? '' : content
-      })
     }
   }
 }

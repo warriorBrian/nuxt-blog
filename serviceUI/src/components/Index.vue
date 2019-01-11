@@ -20,7 +20,6 @@
   </div>
 </template>
 <script>
-import store from '@/vuex/store'
 import {mapState, mapMutations} from 'vuex'
 export default {
   data () {
@@ -59,15 +58,8 @@ export default {
           this.error('密码错误', msg, false)
         }
       })
-    },
-    error (title, content, nodesc) {
-      this.$Notice.error({
-        title: title,
-        desc: nodesc ? '' : content
-      })
     }
   },
-  store,
   computed: {
     ...mapState(['tokenName'])
   }

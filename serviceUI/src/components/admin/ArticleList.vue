@@ -164,18 +164,6 @@ export default {
         this.ok = ok
       })
     },
-    success (title, content, nodesc) {
-      this.$Notice.success({
-        title: title,
-        desc: nodesc ? '' : content
-      })
-    },
-    error (title, content, nodesc) {
-      this.$Notice.error({
-        title: title,
-        desc: nodesc ? '' : content
-      })
-    },
     dele () {
       /*
       *真正删除数据。异步使用延迟删除

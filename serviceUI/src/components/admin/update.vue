@@ -150,18 +150,6 @@ export default {
     },
     dateContent (val) {
       this.date = FormatDate(val)
-    },
-    error (title, content, nodesc) {
-      this.$Notice.error({
-        title: title,
-        desc: nodesc ? '' : content
-      })
-    },
-    success (title, content, nodesc) {
-      this.$Notice.success({
-        title: title,
-        desc: nodesc ? '' : content
-      })
     }
   }
 }
