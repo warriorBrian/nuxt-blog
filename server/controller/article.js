@@ -144,6 +144,7 @@ const deleteFile = async (ctx) => {
         ctx.body = error
     }
 }
+
 module.exports = {
 	insertArticle,
 	getArticle,

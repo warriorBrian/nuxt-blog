@@ -5,8 +5,8 @@
 		<el-col :span="20">
 			<nuxt-link :to="{name:'index'}" class="logo">Brian's Blog</nuxt-link>
 			<el-menu :default-active="active" class="el-menu-demo navbar" active-text-color="#41b883" text-color="#fff"  mode="horizontal" @select="handleSelect">
-				<el-menu-item index="index">前端文章</el-menu-item>
-				<el-menu-item index="Backarticle">后端文章</el-menu-item>
+				<el-menu-item index="index">文章列表</el-menu-item>
+				<!--<el-menu-item index="Backarticle">后端文章</el-menu-item>-->
 				<el-menu-item index="version">更新日志</el-menu-item>
 				<el-menu-item index=""><a href="http://docs.brianlee.cn" class="docs" target="_blank">文档中心</a></el-menu-item>
 				<el-menu-item index="about">关于我</el-menu-item>

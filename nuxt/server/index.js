@@ -4,7 +4,7 @@ import { Nuxt, Builder } from 'nuxt'
 async function start () {
   const app = new Koa()
   const host = process.env.HOST || 'localhost'
-  const port = process.env.PORT || 8081
+  const port = process.env.PORT || 8082
 
   // Import and Set Nuxt.js options
   let config = require('../nuxt.config.js')

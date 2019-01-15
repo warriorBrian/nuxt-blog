@@ -27,3 +27,11 @@ export default {
   }
 }
 </script>
+<style lang="less">
+.ivu-menu-item {
+  font-weight: bold !important;
+  i {
+    font-weight: bold;
+  }
+}
+</style>

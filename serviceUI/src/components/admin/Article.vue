@@ -76,7 +76,7 @@ export default {
         this.$axios.post(`/api/article/insert${this.radio}`, param).then(res => {
           let {error} = res.data
           if (Object.is(error, 0)) {
-            this.success('文章发布成功', '', true);
+            this.success('文章发布成功', '文章发布成功', false);
             [this.title, this.des, this.original, this.content] = ['']
           } else {
             this.error('发布失败', '未知原因', false)

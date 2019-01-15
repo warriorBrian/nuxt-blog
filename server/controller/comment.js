@@ -1,0 +1,54 @@
+const article = require('../models/frontArticleSchema');
+const db = require('../models/commentSchema');
+
+/**
+ * private API
+ * @method insert
+ * @param {object} id
+ * @param {object} comments
+ * @return {object|null}  status
+ */
+
+const insertComment = async (ctx) => {
+    try {
+        let request = ctx.request.body;
+        let {_id: id, title} = await article.findOne({"_id": request.id})
+        let result = await db.updateOne({id: id, title: title}, {$push: {comment: request.comment }}, {upsert:true})
+        ctx.body = {result}
+    } catch (error) {
+        ctx.body = error
+    }
+}
+
+/**
+ * private API
+ * @method insert
+ * @param {object} id
+ * @return {object|null}  commentsLists
+ */
+
+const articleComments = async (ctx) => {
+    try {
+        let request = ctx.request.body;
+        let result = await db.findOne({id: request.id}, {__v: 0, _id: 0})
+        ctx.body = result
+    } catch (error) {
+        ctx.body = error
+    }
+}
+
+const commentsList = async (ctx) => {
+    try {
+        let result = await db.find({}, {__v: 0, _id: 0})
+        console.log(result)
+        ctx.body = result
+    } catch (error) {
+        ctx.body = error
+    }
+}
+
+module.exports = {
+    insertComment,
+    articleComments,
+    commentsList
+}
