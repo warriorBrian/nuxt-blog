@@ -23,7 +23,7 @@
       <el-col :span="15" class="detail_content" style="margin-left:-63px;">
         <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
           <el-form-item label="姓名" prop="username">
-            <el-input type="text" v-model="ruleForm.username" autocomplete="off" placeholder="请输入用户名"></el-input>
+            <el-input type="text" v-model="ruleForm.username" @change="usernameChange" autocomplete="off" placeholder="请输入用户名"></el-input>
           </el-form-item>
           <el-form-item label="邮箱" prop="email">
             <el-input type="text" v-model="ruleForm.email" autocomplete="off" placeholder="请输入邮箱 (不会呈现给任何人)"></el-input>
@@ -40,17 +40,17 @@
     </el-row>
     <el-row type="flex" justify="center" class="detail_content">
       <el-col :span="14">
-        <el-card class="box-card" v-for="o in 4" :key="o">
+        <el-card class="box-card" v-show="commentList.length !== 0" v-for="(item, index) in commentList" :key="index">
           <div slot="header" class="clearfix">
-            <span style="font-weight: bold;">Brian <el-tag type="success">作者</el-tag> 说：</span>
+            <span style="font-weight: bold;">{{item.username}} <el-tag type="success">作者</el-tag> 说：</span>
             <!--<el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>-->
-            <span style="float: right; padding: 3px 0;font-weight: bold;"><Time :time="time3" :interval="1" /></span>
+            <span style="float: right; padding: 3px 0;font-weight: bold;"><Time :time="item.time" :interval="1" /></span>
           </div>
           <div>
-            aaaaa
-            <el-button type="primary" @click="commentLists($route.params.id)">提交</el-button>
+            {{item.content}}
           </div>
         </el-card>
+        <!--<el-pagination class="pagination" @current-change="pagination" background layout="prev, pager, next" :page-size="4" :total="count" v-show="count > 4"></el-pagination>-->
       </el-col>
     </el-row>
   </div>
@@ -102,13 +102,15 @@ export default {
           { validator: validateContent, trigger: 'blur' }
         ]
       },
-      time3: new Date().getTime()
+      commentList: [],
+      count: 0,
+      author: ['brian', 'brianlee', 'BrianLee', 'Brian']
     }
 	},
 	async asyncData({app,params}) {
 		let json = {id:params.id}
 		let result = await app.$axios.get(`${baseurl}/api/article/getFrontArticleInfo`,{params:json});
-    let {error,info} = result.data;
+    let {info} = result.data;
     let {content,des,list,time,title} = info[0];
 		return {title,des,content,list,time}
 	},
@@ -125,8 +127,8 @@ export default {
     NavHeader,
     Time
   },
-  mounted () {
-	  this.commentLists(this.$route.params.id)
+  created () {
+    this.commentLists(this.$route.params.id)
   },
   methods: {
     submitForm(formName) {
@@ -135,7 +137,11 @@ export default {
           let json = Object.assign({}, {comment: Object.assign(this.ruleForm, {time: new Date().getTime()}), id: this.$route.params.id})
           this.commentsSubmit(json, formName)
         } else {
-          console.log('error submit!!');
+          this.$notify({
+            title: '评论失败',
+            message: '请认真填写表单内容',
+            type: 'error'
+          });
           return false;
         }
       });
@@ -153,6 +159,7 @@ export default {
             message: '发布评论成功，请注意言论',
             type: 'success'
           });
+          this.commentLists(this.$route.params.id)
         }
       } catch (error) {
         // handle error
@@ -160,11 +167,20 @@ export default {
     },
     async commentLists (id) {
       try {
-        let result = await this.$axios.post(`${baseurl}/api/articleComments`, {id: '5c3e9e2b39bb0c39ddac508f'})
-        console.log(result)
+        let {data: {count, result}} = await this.$axios.post(`${baseurl}/api/articleComments`, {id})
+        /*数组暂时倒序*/
+        this.count = count
+        this.commentList = result.comment.reverse()
       } catch (error) {
         // handle error
       }
+    },
+    pagination(page) {
+      console.log(page)
+    },
+    usernameChange (val) {
+      // 临时存放
+      console.log(this.author.includes(val))
     }
   }
 }
@@ -191,5 +207,13 @@ export default {
     padding:0 6px !important;
     height:25px !important;
     line-height: 25px !important;
+  }
+  /*分页*/
+  .pagination {
+    float:right;
+    margin-top:1rem;
+  }
+  .el-pagination.is-background .el-pager li:not(.disabled).active {
+    background-color:#41B883;
   }
 </style>

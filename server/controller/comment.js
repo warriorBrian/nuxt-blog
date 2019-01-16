@@ -37,8 +37,15 @@ const getUserIp = (req) => {
 const articleComments = async (ctx) => {
     try {
         let request = ctx.request.body;
-        let result = await db.findOne({id: request.id}, {__v: 0, _id: 0})
-        ctx.body = result
+        let [result] = await db.find({"id": request.id}, {__v: 0, _id: 0})
+        if (!result) {
+            await db.updateOne({id: request.id}, {$push: {comment: [] }}, {upsert:true})
+        }
+        ctx.body = {
+            error: 0,
+            result,
+            count: result.comment.length
+        }
     } catch (error) {
         ctx.body = error
     }
@@ -48,7 +55,11 @@ const commentsList = async (ctx) => {
     try {
         let result = await db.find({}, {__v: 0, _id: 0})
         console.log(result)
-        ctx.body = result
+        ctx.body = {
+            error: 0,
+            result,
+            count: result.comment.length
+        }
     } catch (error) {
         ctx.body = error
     }
