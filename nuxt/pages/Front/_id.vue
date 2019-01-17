@@ -73,10 +73,16 @@ export default {
       }
     };
     var validateEmail = (rule, value, callback) => {
+      const reg = /^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$/
       if (value === '') {
         callback(new Error('请输入您的邮箱'));
       } else {
-        callback();
+        if (reg.test(value)) {
+          callback()
+        } else {
+          callback(new Error('邮箱格式不正确'));
+        }
+        // callback();
       }
     };
     var validateContent = (rule, value, callback) => {
@@ -110,10 +116,10 @@ export default {
           { validator: checkUsername, trigger: 'change' }
         ],
         email: [
-          { validator: validateEmail, trigger: 'blur' }
+          { validator: validateEmail, trigger: 'change' }
         ],
         content: [
-          { validator: validateContent, trigger: 'blur' }
+          { validator: validateContent, trigger: 'change' }
         ],
         pass: [
           { validator: validateIdentity, trigger: 'change' }

@@ -8,7 +8,7 @@ const version = require('../controller/version');
 const LoginStrategy = require('../controller/login');
 const system = require('../controller/system');
 const multer = require('koa-multer');
-const {insertComment, articleComments, commentsList, commentConfig, configList} = require('../controller/comment');
+const {insertComment, articleComments, commentsList, commentConfig, configList, delComment} = require('../controller/comment');
 //配置
 const storage = multer.diskStorage({
     //文件保存路径
@@ -65,4 +65,6 @@ router.post('/commentsList', commentsList)
 router.post('/comment/config', commentConfig)
 /*后台评论配置列表*/
 router.post('/comment/config/list', configList)
+/*删除某一条评论接口*/
+router.post('/comment/delComment', delComment)
 module.exports = router;

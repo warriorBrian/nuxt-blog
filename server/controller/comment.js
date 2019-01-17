@@ -76,6 +76,12 @@ const articleComments = async (ctx) => {
     }
 }
 
+/**
+ * private API
+ * @method insert
+ * @return {object|null}  comments Lists
+ */
+
 const commentsList = async (ctx) => {
     try {
         let req = ctx.request.body;
@@ -94,6 +100,14 @@ const commentsList = async (ctx) => {
     }
 }
 
+/**
+ * private API
+ * @method insert
+ * @param {object} status
+ * @param {object} author
+ * @return {object|null}  comment config
+ */
+
 const commentConfig = async (ctx) => {
     try {
        let request = ctx.request.body
@@ -104,6 +118,12 @@ const commentConfig = async (ctx) => {
       ctx.body = error
     }
 }
+
+/**
+ * private API
+ * @method insert
+ * @return {object|null}  config list
+ */
 
 const configList = async (ctx) => {
     try {
@@ -120,10 +140,36 @@ const configList = async (ctx) => {
     }
 }
 
+/**
+ * private API
+ * @method insert
+ * @param {object} timestamp
+ * @return {object|null}  del comment
+ */
+
+const delComment = async (ctx) => {
+    try {
+        let request = ctx.request.body
+        let { parseInt } = Number;
+        let result = await db.update({"id": request.id}, {$pull: {comment: {time: parseInt(request.time)}}})
+        ctx.body = {
+            error: 0,
+            delCount: result.nModified,
+            success: request.ok
+        }
+    } catch (error) {
+        ctx.body = {
+            error: 1,
+            data: error
+        }
+    }
+}
+
 module.exports = {
     insertComment,
     articleComments,
     commentsList,
     commentConfig,
-    configList
+    configList,
+    delComment
 }

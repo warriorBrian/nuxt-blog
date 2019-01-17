@@ -43,15 +43,22 @@
         </Card>
       </Col>
     </Row>
+    <modal-del :status.sync="modalStatus" @on-del="modalDel"></modal-del>
   </div>
 </template>
 <script>
+import ModalDel from '@/components/common/ModalDel'
 export default {
   data () {
     return {
       authorList: [],
-      status: false,
+      status: true,
       author: '',
+      modalStatus: false,
+      // 临时存放时间戳
+      commentTime: 0,
+      // 临时存放id
+      commentId: null,
       columns7: [
         {
           title: '用户名',
@@ -90,14 +97,25 @@ export default {
         },
         {
           title: '时间',
-          key: 'time'
+          key: 'time',
+          align: 'center',
+          render: (h, params) => {
+            let reverse = (m) => m < 10 ? '0' + m : m
+            let getDate = (time) => {
+              let date = new Date(time)
+              return `${date.getFullYear()}-${reverse(date.getMonth() + 1)}-${reverse(date.getDate())} ${reverse(date.getHours())}:${reverse(date.getMinutes())}:${reverse(date.getSeconds())}`
+            }
+            return h('div', [
+              h('strong', {}, `${getDate(params.row.time)}`)
+            ])
+          }
         },
         {
           title: '评论内容',
           key: 'content'
         },
         {
-          title: 'Action',
+          title: '操作',
           key: 'action',
           width: 150,
           align: 'center',
@@ -124,34 +142,19 @@ export default {
                 },
                 on: {
                   click: () => {
-                    this.remove(params.index)
+                    /* 遍历拿到上层id */
+                    for (let item of this.commentTable) {
+                      for (let items of item.comment) {
+                        if (Object.is(items.time, params.row.time)) {
+                          this.removeComment(item.id, params.row.time)
+                        }
+                      }
+                    }
                   }
                 }
               }, '删除')
             ])
           }
-        }
-      ],
-      data6: [
-        {
-          name: 'John Brown',
-          age: 18,
-          address: 'New York No. 1 Lake Park'
-        },
-        {
-          name: 'Jim Green',
-          age: 24,
-          address: 'London No. 1 Lake Park'
-        },
-        {
-          name: 'Joe Black',
-          age: 30,
-          address: 'Sydney No. 1 Lake Park'
-        },
-        {
-          name: 'Jon Snow',
-          age: 26,
-          address: 'Ottawa No. 2 Lake Park'
         }
       ],
       commentTable: [],
@@ -160,11 +163,15 @@ export default {
   },
   created () {
     this.authorLists()
-    this.commentList(1, 5)
+    this.commentList(1, 4)
     this.commentLists()
+  },
+  components: {
+    ModalDel
   },
   methods: {
     async authorLists () {
+      // 调用控制字段列表
       try {
         let {data} = await this.$axios.post('/api/comment/config/list')
         if (Object.is(data.error, 0)) {
@@ -176,9 +183,9 @@ export default {
       }
     },
     async changeCommentConfig (author, status) {
+      // 增加控制字段
       try {
         let {data} = await this.$axios.post('/api/comment/config', {author, status})
-        console.log(data)
         if (Object.is(data.nModified, 1)) {
           this.success('添加成功', '添加保留字段成功', false)
           this.author = ''
@@ -199,9 +206,9 @@ export default {
       console.log(val)
     },
     async commentList (page, pageSize) {
+      // 评论列表
       try {
         let {data} = await this.$axios.post('/api/commentsList', {page, pageSize})
-        console.log(data.result)
         this.commentTable = data.result
       } catch (error) {
         // handle error
@@ -210,14 +217,33 @@ export default {
     show (row) {
       console.log(row)
       this.$Modal.info({
-        title: 'User Info',
+        title: '评论信息',
         content: `用户名：${row.username}<br>邮箱：${row.email}<br>评论内容：${row.content}`
       })
+    },
+    removeComment (id, time) {
+      this.modalStatus = true
+      this.commentTime = time
+      this.commentId = id
+    },
+    async modalDel () {
+      try {
+        let {data} = await this.$axios.post('/api/comment/delComment', {id: this.commentId, time: this.commentTime})
+        if (Object.is(data.error, 0)) {
+          // 成功删除
+          this.success('删除成功', `成功删除数量：${data.delCount}`, false)
+          // 重新调用列表
+          this.commentList(1, 4)
+        } else {
+          this.error(`错误代码：${data.error}`, `${data.data}`, false)
+        }
+      } catch (error) {
+        this.error(`错误信息`, `${error}`, false)
+      }
     },
     async commentLists () {
       try {
         let {data: {data}} = await this.$axios.post(`/api/comment/config/list`)
-        console.log(data.author)
         this.authorConfig = data.author
       } catch (error) {
         // handle error
