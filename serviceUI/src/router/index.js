@@ -45,6 +45,12 @@ export default new Router({
           name: 'version',
           component: () => import(/* webpackChunkName: 'version' */ '@/components/admin/Version.vue'),
           meta: {requireAuth: true}
+        },
+        {
+          path: 'comment',
+          name: 'comment',
+          component: () => import(/* webpackChunkName: 'version' */ '@/components/admin/Comment.vue'),
+          meta: {requireAuth: true}
         }
       ]
     },

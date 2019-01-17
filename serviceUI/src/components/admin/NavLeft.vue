@@ -1,5 +1,5 @@
 <template>
-  <Menu active-name="admin" :open-names="['1','2']" class="menu-left" @on-select="getIndex" style="width:100%;min-height:100vh;">
+  <Menu active-name="admin" :open-names="['1','2','3']" class="menu-left" @on-select="getIndex" style="width:100%;min-height:100vh;">
     <Submenu name="1">
         <template slot="title">
             <Icon class="iconfont icon-xitong"></Icon>
@@ -15,6 +15,13 @@
             版本控制
         </template>
         <MenuItem name="version"><Icon class="iconfont icon-fabu"></Icon>发布版本</MenuItem>
+    </Submenu>
+    <Submenu name="3">
+      <template slot="title">
+        <Icon class="iconfont icon-pinglun1"></Icon>
+        评论管理
+      </template>
+      <MenuItem name="comment"><Icon class="iconfont icon-pinglun"></Icon>评论列表</MenuItem>
     </Submenu>
   </Menu>
 </template>
@@ -33,5 +40,8 @@ export default {
   i {
     font-weight: bold;
   }
+}
+.iconfont {
+  font-weight: bold;
 }
 </style>

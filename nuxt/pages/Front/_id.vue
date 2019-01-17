@@ -28,6 +28,9 @@
           <el-form-item label="邮箱" prop="email">
             <el-input type="text" v-model="ruleForm.email" autocomplete="off" placeholder="请输入邮箱 (不会呈现给任何人)"></el-input>
           </el-form-item>
+          <el-form-item label="身份校验" prop="pass" v-show="authorStatus">
+            <el-input type="password" v-model="ruleForm.pass" autocomplete="off" placeholder="校验是否为作者身份，校验值为后台登录密码"></el-input>
+          </el-form-item>
           <el-form-item label="内容" prop="content">
             <el-input type="textarea" :rows="8" v-model="ruleForm.content" autocomplete="off"></el-input>
           </el-form-item>
@@ -42,7 +45,7 @@
       <el-col :span="14">
         <el-card class="box-card" v-show="commentList.length !== 0" v-for="(item, index) in commentList" :key="index">
           <div slot="header" class="clearfix">
-            <span style="font-weight: bold;">{{item.username}} <el-tag type="success">作者</el-tag> 说：</span>
+            <span style="font-weight: bold;">{{item.username}} <el-tag type="success" v-show="author.includes(item.username)">作者</el-tag> 说：</span>
             <!--<el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>-->
             <span style="float: right; padding: 3px 0;font-weight: bold;"><Time :time="item.time" :interval="1" /></span>
           </div>
@@ -60,7 +63,6 @@
 import NavHeader from '~/components/NavHeader.vue';
 import {baseurl} from '~/plugins/url.js';
 import Time from '~/plugins/time'
-import Vue from 'vue'
 export default {
 	data() {
     var checkUsername = (rule, value, callback) => {
@@ -84,27 +86,43 @@ export default {
         callback();
       }
     };
+    var validateIdentity = (rule, value, callback) => {
+      if (this.authorStatus) {
+        if (value === '') {
+          callback(new Error('请输入校验值，校验作者身份'))
+        } else {
+          callback()
+        }
+      } else {
+        callback()
+      }
+    }
 		return {
       active:'index',
       ruleForm: {
         username: '',
         email: '',
-        content: ''
+        content: '',
+        pass: ''
       },
       rules: {
         username: [
-          { validator: checkUsername, trigger: 'blur' }
+          { validator: checkUsername, trigger: 'change' }
         ],
         email: [
           { validator: validateEmail, trigger: 'blur' }
         ],
         content: [
           { validator: validateContent, trigger: 'blur' }
+        ],
+        pass: [
+          { validator: validateIdentity, trigger: 'change' }
         ]
       },
       commentList: [],
       count: 0,
-      author: ['brian', 'brianlee', 'BrianLee', 'Brian']
+      author: [],
+      authorStatus: false
     }
 	},
 	async asyncData({app,params}) {
@@ -151,8 +169,8 @@ export default {
     },
     async commentsSubmit (json, formName) {
       try {
-        let {data: {result: {ok}}} = await this.$axios.post(`${baseurl}/api/comment`, json)
-        if (Object.is(ok, 1)) {
+        let {data} = await this.$axios.post(`${baseurl}/api/comment`, json)
+        if (Object.is(data.status, '0000')) {
           this.$refs[formName].resetFields()
           this.$notify({
             title: '评论成功',
@@ -160,6 +178,21 @@ export default {
             type: 'success'
           });
           this.commentLists(this.$route.params.id)
+        } else if (Object.is(data.status, '0001')) {
+          this.$refs[formName].resetFields()
+          this.$notify({
+            title: '身份校验成功',
+            message: '发布评论成功，请注意言论',
+            type: 'success'
+          });
+          this.commentLists(this.$route.params.id)
+        } else {
+          this.$notify({
+            title: '身份校验失败',
+            message: data.msg,
+            type: 'error'
+          });
+          return false;
         }
       } catch (error) {
         // handle error
@@ -168,9 +201,11 @@ export default {
     async commentLists (id) {
       try {
         let {data: {count, result}} = await this.$axios.post(`${baseurl}/api/articleComments`, {id})
+        let {data: {data}} = await this.$axios.post(`${baseurl}/api/comment/config/list`, {id})
         /*数组暂时倒序*/
         this.count = count
         this.commentList = result.comment.reverse()
+        this.author = data.author
       } catch (error) {
         // handle error
       }
@@ -179,8 +214,7 @@ export default {
       console.log(page)
     },
     usernameChange (val) {
-      // 临时存放
-      console.log(this.author.includes(val))
+      this.authorStatus = this.author.includes(val)
     }
   }
 }
