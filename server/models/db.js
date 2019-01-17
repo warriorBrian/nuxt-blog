@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
-const db = mongoose.createConnection('mongodb://127.0.0.1/blog');
+// 172.26.4.181:27017
+const db = mongoose.createConnection('mongodb://127.0.0.1:27017/blog');
 const chalk = require('chalk');
 const success = chalk.bold.green;
 const error = chalk.bold.red;

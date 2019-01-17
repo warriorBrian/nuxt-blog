@@ -12,7 +12,6 @@ let insertArticle = async (ctx) => {
 	try{
 		let req = ctx.request.body;
 		let {title,htmlContent,date,des,original,radio} = req;
-		console.log(req)
 		const front = await frontArticle.update({title},{$set:{title,content:htmlContent,time:date,des,original,list:radio}},{upsert:true});
 		let {ok} = front;
 		ctx.body = {
@@ -144,6 +143,7 @@ const deleteFile = async (ctx) => {
         ctx.body = error
     }
 }
+
 module.exports = {
 	insertArticle,
 	getArticle,

@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import { Button, Row, Col, Menu, MenuItem, Upload, Icon, Layout, Sider, Submenu, MenuGroup, Input, DatePicker, Card, RadioGroup, Radio, Notice, Tag, Table, Page, Modal, Message, Circle, Poptip } from 'iview'
+import { Button, Row, Col, Menu, MenuItem, Upload, Icon, Layout, Sider, Submenu, MenuGroup, Input, DatePicker, Card, RadioGroup, Radio, Notice, Tag, Table, Page, Modal, Message, Circle, Poptip, Switch, Divider } from 'iview'
 import 'iview/dist/styles/iview.css'
 import mavonEditor from 'mavon-editor'
 import 'mavon-editor/dist/css/index.css'
@@ -35,8 +35,11 @@ Vue.component('Modal', Modal)
 Vue.component('i-circle', Circle)
 Vue.component('Poptip', Poptip)
 Vue.component('Upload', Upload)
+Vue.component('i-Switch', Switch)
+Vue.component('Divider', Divider)
 Vue.prototype.$Notice = Notice
 Vue.prototype.$Message = Message
+Vue.prototype.$Modal = Modal
 /* eslint-disable no-new */
 router.beforeEach((to, from, next) => {
   // 如果router路由中存在标识符需要鉴权

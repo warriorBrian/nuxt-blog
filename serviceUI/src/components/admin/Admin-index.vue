@@ -5,8 +5,8 @@
                 <Card>
                     <p slot="title">服务器状态</p>
                     <div class="server_status">
-                        <span>运行状态：</span>
-                        <Tag type="dot" :color="constants == 0 ? 'green' : 'red'">{{constants == 0 ? '服务器运行中' : '服务器出现错误'}}</Tag>
+                      <span>运行状态：</span>
+                      <Tag type="dot" :color="Object.is(constants, '0') ? 'success' : 'error'">{{Object.is(constants, '0') ? '服务器运行中' : '服务器出现错误'}}</Tag>
                     </div>
                     <div class="server_status">
                         <span>服务器发行版本：</span>

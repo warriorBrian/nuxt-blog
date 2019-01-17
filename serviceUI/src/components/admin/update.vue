@@ -141,7 +141,7 @@ export default {
           let {error} = res.data
           console.log(res.data)
           if (Object.is(error, 0)) {
-            this.success('修改成功', '', true)
+            this.success('修改成功', '修改成功', false)
           } else {
             this.error('修改失败', '未知原因', false)
           }

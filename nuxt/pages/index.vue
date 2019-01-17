@@ -14,8 +14,7 @@
 					<div class="box-content">{{item.des}}</div>
 				</el-card>
 			</nuxt-link>
-
-			<el-pagination class="pagination" @current-change="pagination" background layout="prev, pager, next" :page-size="5" :total="count"></el-pagination>
+			<el-pagination class="pagination" @current-change="pagination" background layout="prev, pager, next" :page-size="5" :total="count" v-show="count >= 5"></el-pagination>
 		</el-col>
 		<!-- 右侧关于我 -->
         <el-col :span="5" :offset="1">
