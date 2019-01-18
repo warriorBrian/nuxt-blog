@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="comment">
     <nav-header :active="active"></nav-header>
     <el-row type="flex" justify="center">
       <el-col :span="14" class="detail_title">
@@ -227,33 +227,35 @@ export default {
 </script>
 <style lang="less">
   @import './../../assets/css/Index/Detail.less';
-  .clearfix:before,
-  .clearfix:after {
-    display: table;
-    content: "";
-  }
-  .clearfix:after {
-    clear: both
-  }
-  .box-card {
-    border:1px solid #dcdfe6 !important;
-    border-radius: 5px;
-    margin-bottom:1rem;
-  }
-  .el-card__body {
-    background:rgb(248, 248, 248) !important;
-  }
-  .el-tag {
-    padding:0 6px !important;
-    height:25px !important;
-    line-height: 25px !important;
-  }
-  /*分页*/
-  .pagination {
-    float:right;
-    margin-top:1rem;
-  }
-  .el-pagination.is-background .el-pager li:not(.disabled).active {
-    background-color:#41B883;
+  .comment {
+    .clearfix:before,
+    .clearfix:after {
+      display: table;
+      content: "";
+    }
+    .clearfix:after {
+      clear: both
+    }
+    .box-card {
+      border:1px solid #dcdfe6 !important;
+      border-radius: 5px;
+      margin-bottom:1rem;
+    }
+    .el-card__body {
+      background:rgb(248, 248, 248) !important;
+    }
+    .el-tag {
+      padding:0 6px !important;
+      height:25px !important;
+      line-height: 25px !important;
+    }
+    /*分页*/
+    .pagination {
+      float:right;
+      margin-top:1rem;
+    }
+    .el-pagination.is-background .el-pager li:not(.disabled).active {
+      background-color:#41B883;
+    }
   }
 </style>

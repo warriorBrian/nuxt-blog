@@ -111,3 +111,6 @@ blockquote p {
 .hljs-strong {
   font-weight: bold;
 }
+.markdown-body img {
+  width: 100%
+}

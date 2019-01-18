@@ -12,6 +12,7 @@
     "chalk": "^2.4.1",
     "debug": "^2.6.3",
     "ejs": "~2.3.3",
+    "formidable": "^1.2.1",
     "koa": "^2.2.0",
     "koa-bodyparser": "^3.2.0",
     "koa-convert": "^1.2.0",
@@ -24,7 +25,8 @@
     "koa-session": "^5.8.1",
     "koa-static": "^3.0.0",
     "koa-views": "^5.2.1",
-    "mongoose": "^5.1.0"
+    "mongoose": "^5.1.0",
+    "qiniu": "^7.2.1"
   },
   "devDependencies": {
     "nodemon": "^1.8.1"

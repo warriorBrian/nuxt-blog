@@ -7,6 +7,7 @@ const del = require('../controller/delete');
 const version = require('../controller/version');
 const LoginStrategy = require('../controller/login');
 const system = require('../controller/system');
+const {getToken, articleImgUpload, delArticleImg} = require('../controller/articleImg');
 const multer = require('koa-multer');
 const {insertComment, articleComments, commentsList, commentConfig, configList, delComment} = require('../controller/comment');
 //配置
@@ -67,4 +68,10 @@ router.post('/comment/config', commentConfig)
 router.post('/comment/config/list', configList)
 /*删除某一条评论接口*/
 router.post('/comment/delComment', delComment)
+/*获取上传图片token*/
+router.post('/article/getToken', getToken)
+/*上传七牛云图片*/
+router.post('/article/upload', articleImgUpload)
+/*删除七牛云图片*/
+router.post('/article/delArticleImg', delArticleImg)
 module.exports = router;

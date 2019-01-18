@@ -7,7 +7,7 @@
 
     <label for="title" class="article">文章简介</label>
     <Input v-model="des" size="large" placeholder="在此输入文章标题" name="title" class="article_title"></Input>
-    <mavon-editor @change="changeContent" class="article_content" v-model="content" fontSize="18px" placeholder="开始编写文章内容..." style="min-height:600px;" />
+    <mavon-editor ref="mavonEditor" @change="changeContent" class="article_content" v-model="content" fontSize="18px" @imgDel="imgDel" @imgAdd="imgAdd" placeholder="开始编写文章内容(上传图片为七牛云，删除功能暂无)..." style="min-height:600px;" />
     <Button type="success" class="article_button" @click="submitArticle">发布文章</Button>
   </Col>
   <Col span="4" offset="1" class="content_right">
@@ -22,10 +22,10 @@
                 <i class="iconfont icon-h5"></i>
                 <span class="list_menu">前端开发</span>
             </Radio>
-            <Radio label="Back">
-                <Icon class="iconfont icon-nodejs"></Icon>
-                <span class="list_menu">后端开发</span>
-            </Radio>
+            <!--<Radio label="Back">-->
+                <!--<Icon class="iconfont icon-nodejs"></Icon>-->
+                <!--<span class="list_menu">后端开发</span>-->
+            <!--</Radio>-->
             <!--<Radio label="about-me">-->
                 <!--<Icon class="iconfont icon-guanyuwomen"></Icon>-->
                 <!--<span class="list_menu">关于我</span>-->
@@ -47,8 +47,12 @@ export default {
       date: FormatDate(new Date()),
       radio: 'Front',
       des: '',
-      originalContent: ''
+      originalContent: '',
+      uploadToken: ''
     }
+  },
+  created () {
+    this.getUploadToken()
   },
   methods: {
     changeContent (value, render) {
@@ -82,6 +86,35 @@ export default {
             this.error('发布失败', '未知原因', false)
           }
         })
+      }
+    },
+    imgAdd (pos, file) {
+      var formdata = new FormData()
+      formdata.append('token', this.uploadToken)
+      formdata.append('file', file)
+      this.$axios({
+        url: '/api/article/upload',
+        method: 'post',
+        data: formdata,
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          'Accept': '*/*'
+        }
+      }).then(res => {
+        this.$refs.mavonEditor.$img2Url(pos, res.data.img)
+      })
+    },
+    imgDel (pos, file) {
+      /* 删除预留 */
+      console.log(pos)
+      console.log(file)
+    },
+    async getUploadToken () {
+      try {
+        let result = await this.$axios.post('/api/article/getToken')
+        this.uploadToken = result.data
+      } catch (error) {
+        this.error(error, error, false)
       }
     }
   }
