@@ -32,7 +32,7 @@
             </Card>
           </Col>
         </Row>
-    <mavon-editor @change="changeContent" @save="save" class="article_content" v-model="collections.content" fontSize="18px" placeholder="开始编写文章内容..." style="min-height:600px;" />
+    <mavon-editor ref="mavonEditor" @change="changeContent" @imgDel="imgDel" @imgAdd="imgAdd" @save="save" class="article_content" v-model="collections.content" fontSize="18px" placeholder="开始编写文章内容..." style="min-height:600px;" />
     <Button type="warning" class="article_button" @click="submitArticle">修改文章</Button>
   </Col>
   <!-- 右侧 -->
@@ -80,11 +80,13 @@ export default {
       img: {
         path: '',
         filename: ''
-      }
+      },
+      uploadToken: ''
     }
   },
   created () {
     this.init()
+    this.getUploadToken()
   },
   methods: {
     init () {
@@ -150,6 +152,35 @@ export default {
     },
     dateContent (val) {
       this.date = FormatDate(val)
+    },
+    async getUploadToken () {
+      try {
+        let result = await this.$axios.post('/api/article/getToken')
+        this.uploadToken = result.data
+      } catch (error) {
+        this.error(error, error, false)
+      }
+    },
+    imgAdd (pos, file) {
+      var formdata = new FormData()
+      formdata.append('token', this.uploadToken)
+      formdata.append('file', file)
+      this.$axios({
+        url: '/api/article/upload',
+        method: 'post',
+        data: formdata,
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          'Accept': '*/*'
+        }
+      }).then(res => {
+        this.$refs.mavonEditor.$img2Url(pos, res.data.img)
+      })
+    },
+    imgDel (pos, file) {
+      /* 删除预留 */
+      console.log(pos)
+      console.log(file)
     }
   }
 }
