@@ -34,6 +34,9 @@
           <el-form-item label="内容" prop="content">
             <el-input type="textarea" :rows="8" v-model="ruleForm.content" autocomplete="off"></el-input>
           </el-form-item>
+          <no-ssr>
+            <geetest :data="param" style="margin:0 0 50px 100px;" @on-success="geetSuccess" @on-error="geetError"></geetest>
+          </no-ssr>
           <el-form-item>
             <el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
             <el-button @click="resetForm('ruleForm')">重置</el-button>
@@ -63,6 +66,7 @@
 import NavHeader from '~/components/NavHeader.vue';
 import {baseurl} from '~/plugins/url.js';
 import Time from '~/plugins/time'
+import Geetest from '~/components/Geetest.vue'
 export default {
 	data() {
     var checkUsername = (rule, value, callback) => {
@@ -73,6 +77,7 @@ export default {
       }
     };
     var validateEmail = (rule, value, callback) => {
+      console.log(value)
       const reg = /^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$/
       if (value === '') {
         callback(new Error('请输入您的邮箱'));
@@ -111,12 +116,17 @@ export default {
         content: '',
         pass: ''
       },
+      param: {
+        baseUrl: `${baseurl}/api/geet`,
+        product: 'float'
+      },
+      geetValidate: null,
       rules: {
         username: [
           { validator: checkUsername, trigger: 'change' }
         ],
         email: [
-          { validator: validateEmail, trigger: 'change' }
+          { validator: validateEmail, trigger: 'blur' }
         ],
         content: [
           { validator: validateContent, trigger: 'change' }
@@ -149,7 +159,8 @@ export default {
 	},
   components:{
     NavHeader,
-    Time
+    Time,
+    Geetest
   },
   created () {
     this.commentLists(this.$route.params.id)
@@ -158,7 +169,7 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          let json = Object.assign({}, {comment: Object.assign(this.ruleForm, {time: new Date().getTime()}), id: this.$route.params.id})
+          let json = Object.assign({}, {comment: Object.assign(this.ruleForm, {time: new Date().getTime()}), id: this.$route.params.id, geetValidate: this.geetValidate})
           this.commentsSubmit(json, formName)
         } else {
           this.$notify({
@@ -171,7 +182,8 @@ export default {
       });
     },
     resetForm(formName) {
-      this.$refs[formName].resetFields();
+      this.$refs[formName].resetFields()
+      this.$captch.reset()
     },
     async commentsSubmit (json, formName) {
       try {
@@ -183,6 +195,7 @@ export default {
             message: '发布评论成功，请注意言论',
             type: 'success'
           });
+          this.$captch.reset()
           this.commentLists(this.$route.params.id)
         } else if (Object.is(data.status, '0001')) {
           this.$refs[formName].resetFields()
@@ -191,10 +204,11 @@ export default {
             message: '发布评论成功，请注意言论',
             type: 'success'
           });
+          this.$captch.reset()
           this.commentLists(this.$route.params.id)
         } else {
           this.$notify({
-            title: '身份校验失败',
+            title: '校验失败',
             message: data.msg,
             type: 'error'
           });
@@ -221,7 +235,20 @@ export default {
     },
     usernameChange (val) {
       this.authorStatus = this.author.includes(val)
-    }
+      console.log(`status:${this.authorStatus}`)
+    },
+    async geetSuccess (result) {
+      try {
+        this.geetValidate = result
+      } catch (e) {
+        this.$notify({
+          title: '未知错误',
+          message: `发生错误：${e}`,
+          type: 'error'
+        })
+      }
+    },
+    geetError () {}
   }
 }
 </script>

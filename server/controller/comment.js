@@ -3,46 +3,77 @@ const db = require('../models/commentSchema');
 const config = require('../models/commentConfigSchema');
 const md5 = require('./md5');
 const userModel = require('../models/userSchema');
+const geetClick = require('./../geet/click');
 /**
  * private API
  * @method insert
  * @param {object} id
- * @param {object} comments
+ * @param {object} comments, validate
  * @return {object|null}  status
  */
 
 const insertComment = async (ctx) => {
     try {
         let request = ctx.request.body;
-        if (!request.comment.pass) {
-            let {_id: id, title} = await article.findOne({"_id": request.id})
-            delete request.comment.pass
-            let json = Object.assign(request.comment, {ip: getUserIp(ctx.req)})
-            let result = await db.updateOne({id: id, title: title}, {$push: {comment: json }}, {upsert:true})
-            ctx.body = {
-                status: '0000',
-                success: 1,
-                result
-            }
-        } else {
-            let pwd = md5(md5(request.comment.pass).substr(3,8)+md5(request.comment.pass))
-            let pass = await userModel.find({password: pwd})
-            if (pass.length !== 0) {
-                let {_id: id, title} = await article.findOne({"_id": request.id})
-                delete request.comment.pass
-                let json = Object.assign(request.comment, {ip: getUserIp(ctx.req)})
-                let result = await db.updateOne({id: id, title: title}, {$push: {comment: json }}, {upsert:true})
-                ctx.body = {
-                    status: '0001',
-                    success: '1',
-                    result
+        if (request.geetValidate) {
+            let result = await new Promise((resolve) => {   // 验证码二次校验
+                geetClick.validate(ctx.session.fallback, request.geetValidate, (err, success) => {
+                    if (err) {
+                        resolve(err)
+                    }
+                    resolve(success)
+                })
+            })
+            if (result) {
+                if (!request.comment.pass) {
+                    let {_id: id, title} = await article.findOne({"_id": request.id})
+                    delete request.comment.pass
+                    let json = Object.assign(request.comment, {ip: getUserIp(ctx.req)})
+                    let result = await db.updateOne({id: id, title: title}, {$push: {comment: json }}, {upsert:true})
+                    ctx.body = {
+                        status: '0000',
+                        success: 1,
+                        result
+                    }
+                } else {
+                    let pwd = md5(md5(request.comment.pass).substr(3,8)+md5(request.comment.pass))
+                    let pass = await userModel.find({password: pwd})
+                    if (pass.length !== 0) {
+                        let {_id: id, title} = await article.findOne({"_id": request.id})
+                        delete request.comment.pass
+                        let json = Object.assign(request.comment, {ip: getUserIp(ctx.req)})
+                        let result = await db.updateOne({id: id, title: title}, {$push: {comment: json }}, {upsert:true})
+                        ctx.body = {
+                            status: '0001',
+                            success: '1',
+                            result
+                        }
+                    } else {
+                        ctx.body = {
+                            msg: '用户不存在，身份校验不正确',
+                            success: '0',
+                            status: '0004'
+                        }
+                    }
                 }
-            } else {
+            } else if (!result) {
                 ctx.body = {
-                    msg: '用户不存在，身份校验不正确',
+                    msg: '数据校验失败',
                     success: '0',
                     status: '0004'
                 }
+            } else {
+                ctx.body = {
+                    msg: '参数不正确',
+                    success: '0',
+                    status: '0004'
+                }
+            }
+        } else {
+            ctx.body = {
+                msg: '滑动验证参数不正确，请完成滑动验证',
+                success: '0',
+                status: '0004'
             }
         }
     } catch (error) {

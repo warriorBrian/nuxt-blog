@@ -6,6 +6,7 @@ const articleList = require('../controller/articleList');
 const del = require('../controller/delete');
 const version = require('../controller/version');
 const LoginStrategy = require('../controller/login');
+const {geet, validate} = require('../controller/geet');
 const system = require('../controller/system');
 const {getToken, articleImgUpload, delArticleImg} = require('../controller/articleImg');
 const multer = require('koa-multer');
@@ -74,4 +75,6 @@ router.post('/article/getToken', getToken)
 router.post('/article/upload', articleImgUpload)
 /*删除七牛云图片*/
 router.post('/article/delArticleImg', delArticleImg)
+/*获取极验校验*/
+router.get('/geet', geet)
 module.exports = router;
