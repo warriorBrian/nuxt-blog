@@ -67,8 +67,8 @@ let delArticleImg = async (ctx) => {
     try {
         let bucket = "blog";    // 对应储存空间名称
         let request = ctx.request.body
-        let accessKey = ''  // // 源码删除:七牛云获取 ak,必须配置
-        let secretKey = ''  // // 源码删除:七牛云获取 sk,必须配置
+        let accessKey = ''   // 源码删除:七牛云获取 ak,必须配置
+        let secretKey = ''  // 源码删除:七牛云获取 sk,必须配置
         let mac = new qiniu.auth.digest.Mac(accessKey, secretKey);
         let config = new qiniu.conf.Config();
         let bucketManager = new qiniu.rs.BucketManager(mac, config);
