@@ -22,6 +22,11 @@
     "vue-light-timeline": "^0.12.8"
   },
   "devDependencies": {
+	"babel-core": "^6.26.0",
+	"babel-loader": "^7.1.2",
+	"babel-plugin-transform-runtime": "^6.23.0",
+	"babel-preset-env": "^1.6.1",
+	"babel-preset-stage-0": "^6.24.1",
     "babel-eslint": "^7.1.1",
     "babel-plugin-component": "^1.1.0",
     "backpack-core": "^0.3.0",
