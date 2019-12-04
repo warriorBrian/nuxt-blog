@@ -30,7 +30,7 @@
     "babel-eslint": "^7.1.1",
     "babel-plugin-component": "^1.1.0",
     "backpack-core": "^0.3.0",
-    "eslint": "^3.13.1",
+    "eslint": "^4.19.1",
     "eslint-config-standard": "^10.2.1",
     "eslint-loader": "^1.9.0",
     "eslint-plugin-html": "^2.0.3",
