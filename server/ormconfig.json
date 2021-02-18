@@ -1,0 +1,13 @@
+{
+  "type": "mysql",
+  "host": "10.0.80.60",
+  "port": 3306,
+  "username": "root",
+  "password": "brian",
+  "database": "blog",
+  "migrationsTableName": "migrations",
+  "entities": ["dist/**/*.entity{.ts,.js}"],
+  "subscribers": ["dist/subscribers/*{.ts,.js}"],
+  "migrations": ["dist/migration/*.js"],
+  "cli": { "migrationsDir": "migration" }
+}
