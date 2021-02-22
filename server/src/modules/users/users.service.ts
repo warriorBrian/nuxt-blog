@@ -23,6 +23,10 @@ export class UsersService {
     const {page, pageSize} = paging(body.page, body.pageSize);
     const [data, count] = await this.usersRepository.createQueryBuilder('users')
       .select(['users.id', 'users.username', 'users.createdAt', 'users.updatedAt'])
+      .orderBy({
+        'updatedAt': 'DESC',
+        'createdAt': 'DESC'
+      })
       .skip(page).take(pageSize).getManyAndCount();
     return {result: data, count};
   }
