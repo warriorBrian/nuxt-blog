@@ -43,9 +43,4 @@ export class LocationController {
   storeServiceKeys (@Body() body) {
     return this.locationService.storeServiceKeys(body);
   }
-
-  @Get('test')
-  test (@Query() query) {
-    return this.locationService.test(query);
-  }
 }

@@ -96,25 +96,5 @@ export class LocationService {
     }
     await this.optionsRepository.save(storeData);
   }
-
-  async test (query?: any) {
-    const {page, pageSize} = query;
-    const skipData = Number(pageSize) * (Number(page) - 1);
-    const [data, count] = await this.optionsRepository
-      .createQueryBuilder('user')
-      .skip(skipData)
-      .take(Number(pageSize))
-      .getManyAndCount();
-
-    const res = await this.optionsRepository.createQueryBuilder('options')
-      .where('options.key LIKE :key', {key: `%${query.key}%`})
-      .getSql();
-    console.log(res, 'res');
-
-    return {
-      result: data,
-      count
-    }
-  }
-
+  
 }
