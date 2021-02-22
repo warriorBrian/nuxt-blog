@@ -4,7 +4,7 @@
 
 ### 线上地址: [Brian's Blog](http://www.brianlee.cn)
 
-### Nuxt总结文档: [Nuxt.js Docs](http://docs.brianlee.cn)
+### :construction: [2.X 版本地址](https://github.com/warriorBrian/nuxt-blog/tree/2.x)
 
 ------
 
