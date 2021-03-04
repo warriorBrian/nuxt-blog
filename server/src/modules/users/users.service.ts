@@ -25,7 +25,7 @@ export class UsersService {
       .select(['users.id', 'users.username', 'users.createdAt', 'users.updatedAt'])
       .orderBy({
         'updatedAt': 'DESC',
-        'createdAt': 'DESC'
+        'id': 'DESC'
       })
       .skip(page).take(pageSize).getManyAndCount();
     return {result: data, count};
