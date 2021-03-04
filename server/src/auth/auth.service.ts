@@ -8,7 +8,6 @@ export class AuthService {
     return this.jwtService.sign(payload);
   }
   async validate (token) {
-    const res = this.jwtService.verify(token);
-    console.log(res, 'res');
+    return await this.jwtService.verify(token);
   }
 }

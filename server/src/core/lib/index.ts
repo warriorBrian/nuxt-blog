@@ -14,6 +14,7 @@ import toInteger from './toInteger';
 import omitObjectEmpty from './omitObjectEmpty';
 import encryptionRules from './encryptionRules';
 import paging from './paging'
+import getTokenToString from './getTokenToString';
 
 export {
   md5,
@@ -27,5 +28,6 @@ export {
   toInteger,
   omitObjectEmpty,
   encryptionRules,
-  paging
+  paging,
+  getTokenToString
 }

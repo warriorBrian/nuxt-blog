@@ -1,6 +1,6 @@
-import {Entity, Column, PrimaryGeneratedColumn} from 'typeorm';
+import {Entity, Column, PrimaryGeneratedColumn, OneToMany} from 'typeorm';
 import {BaseEntity} from './BaseEntity';
-
+import {ArticleEntity} from './article.entity';
 @Entity('users')
 export class UsersEntity extends BaseEntity {
   @PrimaryGeneratedColumn()
@@ -11,4 +11,7 @@ export class UsersEntity extends BaseEntity {
 
   @Column({length: 255})
   password: string;
+
+  @OneToMany(() => ArticleEntity, articles => articles.user)
+  articles: ArticleEntity
 }
