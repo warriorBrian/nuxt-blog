@@ -73,7 +73,7 @@ export class ArticleController {
    * */
   @AuthStrategy()
   @UsePipes(new ValidateToEmptyPipe(['title', 'content', 'original', 'introduction']))
-  @RateLimit({ points: 3, duration: 60})
+  @RateLimit({ points: 10, duration: 60})
   @UseInterceptors(RateLimiterInterceptor)
   @Post('create')
   protected async createArticle (@Body() data: Required<CreateArticleInterface>, @Headers('authorization') authorization) {

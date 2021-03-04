@@ -18,12 +18,12 @@ export class ArticleService {
   public async getArticleList (query, user) {
     const {page, pageSize} = paging(query.page, query.pageSize);
     const [data, count] = await this.articleRepository.createQueryBuilder('article')
-    .select(['article.id','article.title', 'article.introduction'])
+    .select(['article.id','article.title', 'article.introduction', 'article.createdAt', 'article.updatedAt'])
     .where('article.user_id = :id', { id: user.id })
-    .orderBy({ 'createdAt': 'DESC', 'id': 'DESC' })
+    .orderBy({ 'updatedAt': 'DESC', 'id': 'DESC' })
     .skip(page).limit(pageSize)
     .getManyAndCount();
-    return {result: data, count};
+    return {lists: data, count};
     // const attributionList = await this.articleRepository.createQueryBuilder('article')
     //   .relation(UsersEntity, 'articles')
     //   .of(user.id)
@@ -40,10 +40,10 @@ export class ArticleService {
     const [data, count] = await this.articleRepository.createQueryBuilder('article')
       .select(['article.id','article.title', 'article.introduction', 'user.username'])
       .leftJoin('article.user', 'user', 'article.user_id = user.id')
-      .orderBy({ 'article.createdAt': 'DESC', 'article.id': 'DESC' })
+      .orderBy({ 'article.updatedAt': 'DESC', 'article.id': 'DESC' })
       .skip(page).limit(pageSize)
       .getManyAndCount();
-    return {result: data, count};
+    return {lists: data, count};
   }
 
   /**

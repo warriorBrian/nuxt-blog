@@ -9,7 +9,7 @@ export class addArticleTable1614663505511 implements MigrationInterface {
         \`id\` INT(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
         \`title\` VARCHAR(40) NOT NULL,
         \`content\` LONGTEXT NOT NULL,
-        introduction VARCHAR(100) NOT NULL,
+        introduction TEXT NOT NULL,
         original LONGTEXT NOT NULL,
         \`user_id\` INT(11) DEFAULT NULL,
         \`createdAt\` INT(11) DEFAULT 0,
