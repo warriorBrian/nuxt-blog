@@ -9,7 +9,9 @@ export class BaseEntity {
 
   @BeforeInsert()
   updateDateCreation () {
-    this.createdAt = Number(Math.round(new Date().getTime()/1000));
+    const time = Number(Math.round(new Date().getTime()/1000));
+    this.createdAt = time;
+    this.updatedAt = time;
   }
 
   @BeforeUpdate()
