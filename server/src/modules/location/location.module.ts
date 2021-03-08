@@ -14,6 +14,7 @@ import {RateLimiterModule} from 'nestjs-rate-limiter';
     TypeOrmModule.forFeature([OptionsEntity])
   ],
   controllers: [LocationController],
-  providers: [LocationService]
+  providers: [LocationService],
+  exports: [LocationService]
 })
 export class LocationModule {}

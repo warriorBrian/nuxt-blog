@@ -20,8 +20,8 @@ export class ArticleService {
     const [data, count] = await this.articleRepository.createQueryBuilder('article')
     .select(['article.id','article.title', 'article.introduction', 'article.createdAt', 'article.updatedAt'])
     .where('article.user_id = :id', { id: user.id })
-    .orderBy({ 'updatedAt': 'DESC', 'id': 'DESC' })
-    .skip(page).limit(pageSize)
+    .orderBy({ 'article.updatedAt': 'DESC', 'id': 'DESC' })
+    .skip(page).take(pageSize)
     .getManyAndCount();
     return {lists: data, count};
     // const attributionList = await this.articleRepository.createQueryBuilder('article')
@@ -40,8 +40,8 @@ export class ArticleService {
     const [data, count] = await this.articleRepository.createQueryBuilder('article')
       .select(['article.id','article.title', 'article.introduction', 'user.username'])
       .leftJoin('article.user', 'user', 'article.user_id = user.id')
-      .orderBy({ 'article.updatedAt': 'DESC', 'article.id': 'DESC' })
-      .skip(page).limit(pageSize)
+      .orderBy({ 'article.createdAt': 'DESC', 'article.id': 'DESC' })
+      .offset(page).limit(pageSize)
       .getManyAndCount();
     return {lists: data, count};
   }

@@ -7,6 +7,7 @@ import {LoginModule} from 'src/modules/login/login.module';
 import {GoogleAuthModule} from 'src/modules/googleAuth/googleAuth.module';
 import {LocationModule} from 'src/modules/location/location.module';
 import {UsersModule} from 'src/modules/users/users.module';
+import {BlacklistModule} from 'src/modules/blackList/blacklist.module';
 
 import {TypeOrmModule} from '@nestjs/typeorm';
 
@@ -21,7 +22,8 @@ import {ResponseInterceptor} from 'src/interceptors/response.interceptor';
     ArticleModule,
     GoogleAuthModule,
     LocationModule,
-    UsersModule
+    UsersModule,
+    BlacklistModule
   ],
   providers: [
     {

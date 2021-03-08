@@ -15,6 +15,7 @@ import omitObjectEmpty from './omitObjectEmpty';
 import encryptionRules from './encryptionRules';
 import paging from './paging'
 import getTokenToString from './getTokenToString';
+import validateFormat from './validateFormat';
 
 export {
   md5,
@@ -29,5 +30,6 @@ export {
   omitObjectEmpty,
   encryptionRules,
   paging,
-  getTokenToString
+  getTokenToString,
+  validateFormat
 }
