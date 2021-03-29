@@ -71,7 +71,7 @@ export class BlacklistService {
 
 
   public async changeBlacklistTime (data, user) {
-    const value = plainToClass(ArticleEntity, {exp: data.exp});
+    const value = plainToClass(BlacklistEntity, {exp: data.exp});
     // 查找所属用户，提示给前台
     const belongsUser = await this.blacklistRepository.createQueryBuilder('blacklist')
       .select(['blacklist.id', 'user.username'])
@@ -83,7 +83,7 @@ export class BlacklistService {
       throw new BadRequestException('无法查询关联用户数据');
     }
     if (belongsUser.user.username !== user.username) {
-      throw new ForbiddenException(`无法删除${belongsUser.user.username}用户黑名单`);
+      throw new ForbiddenException(`无法修改${belongsUser.user.username}用户黑名单`);
     }
     // 修改过期时间
     await this.blacklistRepository.createQueryBuilder('blacklist')
