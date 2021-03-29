@@ -12,7 +12,6 @@ import {validateFormat, paging, toInteger} from 'src/core/lib';
 import {plainToClass} from 'class-transformer';
 
 import { MESSAGES } from 'src/core/enums/message.enum';
-import { ArticleEntity } from '../../entity/article.entity';
 
 @Injectable()
 export class BlacklistService {
