@@ -300,16 +300,4 @@ export class CommentService {
     return { words, pass };
   }
 
-  public async test () {
-    const res = await this.commentRepository.createQueryBuilder('comment')
-      .select(['comment.*'])
-      // .select(['comment', 'article.title', 'article.id'])
-      // .leftJoin('comment.article', 'article', 'article.id = comment.article_id')
-      // .orderBy({'comment.createdAt': 'DESC', 'comment.id': 'DESC'})
-      .getMany();
-    console.log(res)
-    return res;
-    // return {list: data, count};
-  }
-
 }
