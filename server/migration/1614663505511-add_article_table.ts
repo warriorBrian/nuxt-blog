@@ -7,7 +7,7 @@ export class addArticleTable1614663505511 implements MigrationInterface {
       await queryRunner.query(`
         CREATE TABLE IF NOT EXISTS article ( 
         \`id\` INT(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
-        \`title\` VARCHAR(40) NOT NULL,
+        \`title\` VARCHAR(50) NOT NULL,
         \`content\` LONGTEXT NOT NULL,
         introduction TEXT NOT NULL,
         original LONGTEXT NOT NULL,
