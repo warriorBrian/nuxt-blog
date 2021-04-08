@@ -9,6 +9,7 @@ import {LocationModule} from 'src/modules/location/location.module';
 import {UsersModule} from 'src/modules/users/users.module';
 import {BlacklistModule} from 'src/modules/blackList/blacklist.module';
 import {CommentModule} from 'src/modules/comment/comment.module';
+import {UploadPicModule} from 'src/modules/uploadPic/uploadPic.module';
 
 import {TypeOrmModule} from '@nestjs/typeorm';
 
@@ -25,7 +26,8 @@ import {ResponseInterceptor} from 'src/interceptors/response.interceptor';
     LocationModule,
     UsersModule,
     BlacklistModule,
-    CommentModule
+    CommentModule,
+    UploadPicModule
   ],
   providers: [
     {

@@ -7,5 +7,6 @@ export enum MESSAGES {
   IP_ALREADY_EXISTS_ERROR = 'IP地址已存在',
   COMMENT_CLOSE = '评论功能已经关闭',
   DATA_NOT_EXISTS_ERROR = '数据不存在',
-  FILE_NOT_EXISTS_ERROR = '文件不存在'
+  FILE_NOT_EXISTS_ERROR = '文件不存在',
+  NOT_SUPPORT_OTHER_METHOD = '暂不支持其他方式'
 }

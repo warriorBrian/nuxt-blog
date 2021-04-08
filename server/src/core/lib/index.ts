@@ -16,6 +16,7 @@ import encryptionRules from './encryptionRules';
 import paging from './paging'
 import getTokenToString from './getTokenToString';
 import validateFormat from './validateFormat';
+import bufferToStream from './bufferToStream';
 
 export {
   md5,
@@ -31,5 +32,6 @@ export {
   encryptionRules,
   paging,
   getTokenToString,
-  validateFormat
+  validateFormat,
+  bufferToStream
 }
