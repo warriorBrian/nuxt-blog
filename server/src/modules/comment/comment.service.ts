@@ -16,7 +16,7 @@ import {Repository} from 'typeorm';
 import {OptionsEntity} from 'src/entity/options.entity';
 import {CommentEntity} from 'src/entity/comment.entity';
 import {ArticleEntity} from 'src/entity/article.entity';
-import {KeywordsFileEntity} from 'src/entity/keywordsFile.entity';
+import {FileEntity} from 'src/entity/file.entity';
 
 @Injectable()
 export class CommentService {
@@ -27,7 +27,7 @@ export class CommentService {
     @InjectRepository(CommentEntity) private readonly commentRepository: Repository<CommentEntity>,
     @InjectRepository(OptionsEntity) private readonly optionsRepository: Repository<OptionsEntity>,
     @InjectRepository(ArticleEntity) private readonly articleRepository: Repository<ArticleEntity>,
-    @InjectRepository(KeywordsFileEntity) private readonly keywordsRepository: Repository<KeywordsFileEntity>,
+    @InjectRepository(FileEntity) private readonly fileRepository: Repository<FileEntity>,
     private readonly locationService: LocationService
   ) {
     this.initKeywords('uploads/keywords');
@@ -125,6 +125,7 @@ export class CommentService {
       .select(['article.id AS id', 'article.title AS title', 'article.createdAt AS createdAt', 'COUNT(comment.article_id) count'])
       .leftJoin('article.comments', 'comment')
       .groupBy('article.id')
+      .orderBy({ 'article.updatedAt': 'DESC', 'article.id': 'DESC' })
       .getRawMany();
   }
 
@@ -237,25 +238,21 @@ export class CommentService {
    * @desc 上传敏感词文件
    * */
   public async uploadKeywordsFile (file) {
-    const {originalname, mimetype, filename, size, path} = file;
-    const value = {original_name: originalname, type: mimetype, filename, size, path };
-    // const data = await this.keywordsRepository.createQueryBuilder('keywords')
-    //   .insert()
-    //   .values(value)
-    //   .execute();
-    const data = await this.keywordsRepository.save(value);
+    const {originalname, filename, size, path} = file;
+    const value = {original_name: originalname, file_type: 'keywords', filename, size, path };
+    const data = await this.fileRepository.save(value);
     // 重载敏感词
     await this.initKeywords('uploads/keywords');
     return {name: data.original_name, id: data.id};
-    // return {message: `成功创建${affectedRows}条`};
   }
 
   /**
    * @desc 敏感词文件列表
    * */
   public async uploadKeyWordsLists () {
-    const data = await this.keywordsRepository.createQueryBuilder('keywords')
+    const data = await this.fileRepository.createQueryBuilder('keywords')
       .select(['keywords.id', 'keywords.original_name'])
+      .where("file_type = 'keywords'")
       .getMany();
     return { list: data };
   }
@@ -264,7 +261,7 @@ export class CommentService {
    * @desc 删除敏感词文件
    * */
   public async uploadKeyWordsDelete ({ id }) {
-    const data = await this.keywordsRepository.findOne({id});
+    const data = await this.fileRepository.findOne({id});
     if (!data) {
       // 数据库数据不存在抛出error
       throw new BadRequestException(MESSAGES.DATA_NOT_EXISTS_ERROR);
@@ -274,7 +271,7 @@ export class CommentService {
       throw new BadRequestException(MESSAGES.FILE_NOT_EXISTS_ERROR);
     }
 
-    const {raw: { affectedRows } } = await this.keywordsRepository.createQueryBuilder()
+    const {raw: { affectedRows } } = await this.fileRepository.createQueryBuilder()
       .delete()
       .where('id = :id', {id})
       .execute();

@@ -1,11 +1,11 @@
-import {Module, CacheModule, NestModule,MiddlewareConsumer, RequestMethod} from '@nestjs/common';
+import {Module, CacheModule, NestModule,MiddlewareConsumer, RequestMethod, HttpModule} from '@nestjs/common';
 import {CommentController} from './comment.controller';
 import {CommentService} from './comment.service';
 import {TypeOrmModule} from '@nestjs/typeorm';
 import {CommentEntity} from 'src/entity/comment.entity';
 import {OptionsEntity} from 'src/entity/options.entity';
 import {ArticleEntity} from 'src/entity/article.entity';
-import {KeywordsFileEntity} from 'src/entity/keywordsFile.entity';
+import {FileEntity} from 'src/entity/file.entity';
 import {LocationModule} from 'src/modules/location/location.module';
 
 // 配置黑名单依赖
@@ -14,8 +14,9 @@ import { BlacklistEntity } from 'src/entity/blacklist.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([CommentEntity, OptionsEntity, ArticleEntity, BlacklistEntity, KeywordsFileEntity]),
+    TypeOrmModule.forFeature([CommentEntity, OptionsEntity, ArticleEntity, BlacklistEntity, FileEntity]),
     LocationModule,
+    HttpModule,
     CacheModule.register()
   ],
   providers: [CommentService],

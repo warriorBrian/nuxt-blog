@@ -1,14 +1,18 @@
-import {Controller, Post, Body, Query, Get, UsePipes, Delete, UploadedFile} from '@nestjs/common';
+import {Controller, Post, Body, Query, Get, UsePipes, Delete, UploadedFile, UseInterceptors, HttpService} from '@nestjs/common';
+import {FileInterceptor} from '@nestjs/platform-express';
 import {CommentService} from './comment.service';
 import {AuthStrategy} from 'src/auth/auth.decorator';
 import {ValidateToEmptyPipe} from 'src/pipe/validateToEmptyPipe.pipe';
 
 import { UploadFile } from 'src/core/decorators/file.decorators'
 
+import * as qiniu from 'qiniu';
+
 @Controller('comment')
 export class CommentController {
   constructor(
-    private readonly commentService: CommentService
+    private readonly commentService: CommentService,
+    private readonly httpService: HttpService
   ) {}
 
   /**
@@ -127,8 +131,20 @@ export class CommentController {
   }
 
   @Get('test')
-  protected test () {
-    return this.commentService.test();
+  // @UseInterceptors(FileInterceptor('file'))
+  // @UploadFile('files', 'uploads/keywords', { filter: ['txt'] })
+  protected async test (@UploadedFile() files) {
+
+
+    // formUploader.putStream(uploadToken, files.originalname, readableStream, putExtra, function (respErr, respBody, respInfo) {
+    //   console.log(respBody, 'respBody');
+    // });
+    // const bucketManager = new qiniu.rs.BucketManager(mac, config);
+    // bucketManager.stat('blog', '5E47F6C5AF2E624CCCA9D938DAAD3860.jpg', function(err, respBody, respInfo) {
+    //   console.log(respBody);
+    //   console.log(respInfo);
+    // });
+
   }
 
 }
