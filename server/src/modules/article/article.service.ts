@@ -9,26 +9,35 @@ import {plainToClass} from 'class-transformer';
 import {MESSAGES} from 'src/core/enums/message.enum';
 import { paging } from 'src/core/lib';
 
+// 图片上传服务
+import {UploadService} from 'src/upload/upload.service';
+
 @Injectable()
 export class ArticleService {
   constructor(
-    @InjectRepository(ArticleEntity) private readonly articleRepository: Repository<ArticleEntity>
+    @InjectRepository(ArticleEntity) private readonly articleRepository: Repository<ArticleEntity>,
+    private readonly uploadService: UploadService
   ) {}
 
   public async getArticleList (query, user) {
     const {page, pageSize} = paging(query.page, query.pageSize);
-    const [data, count] = await this.articleRepository.createQueryBuilder('article')
-    .select(['article.id','article.title', 'article.introduction', 'article.createdAt', 'article.updatedAt'])
-    .where('article.user_id = :id', { id: user.id })
-    .orderBy({ 'article.updatedAt': 'DESC', 'id': 'DESC' })
-    .skip(page).take(pageSize)
-    .getManyAndCount();
+    const data = await this.articleRepository.createQueryBuilder('article')
+      .select(['article.id AS id','article.title AS title', 'article.introduction AS introduction', 'article.createdAt AS createdAt', 'article.updatedAt AS updatedAt', 'COUNT(comment.article_id) comment_count'])
+      .where('article.user_id = :id', { id: user.id })
+      .leftJoin('article.comments', 'comment')
+      .groupBy('article.id')
+      .orderBy({ 'article.updatedAt': 'DESC', 'article.id': 'DESC' })
+      .offset(page).limit(pageSize)
+      .getRawMany();
+    const count = await this.articleRepository.count();
     return {lists: data, count};
-    // const attributionList = await this.articleRepository.createQueryBuilder('article')
-    //   .relation(UsersEntity, 'articles')
-    //   .of(user.id)
-    //   .loadMany();
-    // return attributionList;
+    // const [data, count] = await this.articleRepository.createQueryBuilder('article')
+    // .select(['article.id','article.title', 'article.introduction', 'article.createdAt', 'article.updatedAt'])
+    // .where('article.user_id = :id', { id: user.id })
+    // .orderBy({ 'article.updatedAt': 'DESC', 'id': 'DESC' })
+    // .skip(page).take(pageSize)
+    // .getManyAndCount();
+    // return {lists: data, count};
   }
 
   /**
@@ -114,6 +123,20 @@ export class ArticleService {
       .andWhere('article.user_id = :userId', {userId: user.id})
       .execute();
     return {message: `成功删除${affectedRows}条`};
+  }
+
+  /**
+   * @desc 文章上传图片
+   * */
+  public async articleUploadPic (file) {
+    return await this.uploadService.upload(file, 'images');
+  }
+
+  /**
+   * @desc 删除图片
+   * */
+  public async articleDeletePic ({ id }) {
+    return await this.uploadService.delete(id, 'images');
   }
 
 }

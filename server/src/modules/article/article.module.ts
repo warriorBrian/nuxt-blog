@@ -12,12 +12,16 @@ import { BlacklistEntity } from 'src/entity/blacklist.entity';
 import { OptionsEntity } from 'src/entity/options.entity';
 import { LocationModule } from 'src/modules/location/location.module';
 
+// 图片上传模块
+import {UploadModule} from 'src/upload/upload.module';
+
 @Module({
   imports: [
     RateLimiterModule,
     AuthModule,
     LocationModule,
-    TypeOrmModule.forFeature([ArticleEntity, BlacklistEntity, OptionsEntity])
+    TypeOrmModule.forFeature([ArticleEntity, BlacklistEntity, OptionsEntity]),
+    UploadModule.register()
   ],
   providers: [ArticleService],
   controllers: [ArticleController],
