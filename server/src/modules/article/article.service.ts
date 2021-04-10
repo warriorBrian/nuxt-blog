@@ -2,9 +2,11 @@ import {Injectable, BadRequestException} from '@nestjs/common';
 
 // typeorm
 import {InjectRepository} from '@nestjs/typeorm';
-import {Repository} from 'typeorm';
+import {Repository, Connection} from 'typeorm';
 import {ArticleEntity} from 'src/entity/article.entity';
 import {UsersEntity} from 'src/entity/users.entity';
+import {TagsEntity} from 'src/entity/tags.entity';
+import {ArticleRelationsTagsEntity} from 'src/entity/articleRelationsTags.entity';
 import {plainToClass} from 'class-transformer';
 import {MESSAGES} from 'src/core/enums/message.enum';
 import { paging } from 'src/core/lib';
@@ -16,7 +18,10 @@ import {UploadService} from 'src/upload/upload.service';
 export class ArticleService {
   constructor(
     @InjectRepository(ArticleEntity) private readonly articleRepository: Repository<ArticleEntity>,
-    private readonly uploadService: UploadService
+    @InjectRepository(TagsEntity) private readonly tagsRepository: Repository<TagsEntity>,
+    @InjectRepository(ArticleRelationsTagsEntity) private readonly articleRelationsRepository: Repository<ArticleRelationsTagsEntity>,
+    private readonly uploadService: UploadService,
+    private readonly connection: Connection
   ) {}
 
   public async getArticleList (query, user) {
@@ -68,11 +73,12 @@ export class ArticleService {
   }
 
   /**
-   * @desc Edit Article Presentation
+   * @desc 文章编辑回显
    * */
   public async editArticlePresentation (articleId, user: UsersEntity) {
     const result = await this.articleRepository.createQueryBuilder('article')
-      .select(['article.id', 'article.title', 'article.content', 'article.introduction', 'article.original'])
+      .select(['article.id', 'article.title', 'article.content', 'article.introduction', 'article.original', 'tags'])
+      .leftJoin('article.tags', 'tags')
       .where('article.id = :articleId', {articleId})
       .andWhere('article.user_id = :userId', {userId: user.id})
       .getOne();
@@ -80,49 +86,139 @@ export class ArticleService {
   }
 
   /**
-   * @desc Edit Article
+   * @desc 保存编辑
    * */
   public async editArticle (data, user: UsersEntity) {
-    const {id, title, content, introduction, original} = data;
+    const {id, title, content, introduction, original, tag_id} = data;
     const value = plainToClass(ArticleEntity, {title, content, introduction, original});
-    await this.articleRepository.createQueryBuilder('article')
-      .update()
-      .set(value)
-      .where('article.id = :articleId', {articleId: id})
-      .andWhere('article.user_id = :userId', {userId: user.id})
-      .execute();
-    return { message: '修改成功' };
+
+    const queryRunner = this.connection.createQueryRunner();
+
+    await queryRunner.connect();
+
+    // 开始事务
+    await queryRunner.startTransaction();
+
+    try {
+
+      // 删除关联表对应tags
+      await queryRunner.manager.createQueryBuilder(ArticleRelationsTagsEntity, 'relations')
+        .delete()
+        .where('article_id = :id', {id: id})
+        .execute();
+
+      // 插入对应tags
+      if (Array.isArray(tag_id) && tag_id) {
+        // 标签存在情况下
+        tag_id.forEach(async (item) => {
+          await queryRunner.manager.insert<ArticleRelationsTagsEntity>(ArticleRelationsTagsEntity, {
+            article_id: id,
+            tag_id: item
+          });
+        });
+      }
+
+      // 修改文章
+      await this.articleRepository.createQueryBuilder('article')
+        .update()
+        .set(value)
+        .where('article.id = :articleId', {articleId: id})
+        .andWhere('article.user_id = :userId', {userId: user.id})
+        .execute();
+
+      // 提交事务
+      await queryRunner.commitTransaction();
+
+      return { message: '修改成功' };
+    } catch (e) {
+      // 回滚事务
+      await queryRunner.rollbackTransaction();
+      throw new BadRequestException(e);
+    }
   }
 
   /**
    * @desc Create article service
    * */
   public async createArticle (data, user: UsersEntity) {
-    const {title, content, original, introduction} = data;
+    const {title, content, original, introduction, tag_id} = data;
     const findDuplicationTitle = await this.articleRepository.findOne({title});
     if (findDuplicationTitle) {
       throw new BadRequestException(MESSAGES.TITLE_ALREADY_EXISTS_ERROR);
     }
     const value = plainToClass(ArticleEntity, {title, content, user, introduction, original});
-    const createHandle = await this.articleRepository.createQueryBuilder('article')
-      .insert()
-      .into(ArticleEntity)
-      .values(value)
-      .execute();
-    return {message: `成功创建${createHandle.raw.affectedRows}条`};
+
+    const queryRunner = this.connection.createQueryRunner();
+
+    await queryRunner.connect();
+
+    // 开始事务
+    await queryRunner.startTransaction();
+
+    try {
+      const createHandle = await queryRunner.manager.createQueryBuilder(ArticleEntity, 'article')
+        .insert()
+        .into(ArticleEntity)
+        .values(value)
+        .execute();
+      const articleId = createHandle.raw.insertId;
+      if (Array.isArray(tag_id) && tag_id) {
+        // 标签存在情况下
+        tag_id.forEach(async (item) => {
+          await queryRunner.manager.insert<ArticleRelationsTagsEntity>(ArticleRelationsTagsEntity, {
+            article_id: articleId,
+            tag_id: item
+          });
+        });
+      }
+      // 提交事务
+      await queryRunner.commitTransaction();
+
+      return {message: `成功创建${createHandle.raw.affectedRows}条`};
+    } catch (e) {
+      // 回滚事务
+      await queryRunner.rollbackTransaction();
+      throw new BadRequestException(e);
+    }
   }
 
   /**
    * @desc Delete article
    * */
   public async deleteArticle (id = -1, user: UsersEntity) {
+
     const coverValue = Array.isArray(id) ? id : Array.of(id);
-    const {raw: { affectedRows } } = await this.articleRepository.createQueryBuilder('article')
-      .delete()
-      .where(`article.id IN (:...id)`, {id: coverValue})
-      .andWhere('article.user_id = :userId', {userId: user.id})
-      .execute();
-    return {message: `成功删除${affectedRows}条`};
+
+    const queryRunner = this.connection.createQueryRunner();
+
+    await queryRunner.connect();
+
+    // 开始事务
+    await queryRunner.startTransaction();
+
+    try {
+      const {raw: { affectedRows } } = await queryRunner.manager.createQueryBuilder(ArticleEntity, 'article')
+        .delete()
+        .where(`article.id IN (:...id)`, {id: coverValue})
+        .andWhere('article.user_id = :userId', {userId: user.id})
+        .execute();
+
+      // 同时删除关联表
+      await queryRunner.manager.createQueryBuilder(ArticleRelationsTagsEntity, 'relations')
+        .delete()
+        .where('article_id IN (:...id)', {id: coverValue})
+        .execute();
+
+      // 提交事务
+      await queryRunner.commitTransaction();
+
+      return {message: `成功删除${affectedRows}条`};
+
+    } catch (e) {
+      // 回滚事务
+      await queryRunner.rollbackTransaction();
+      throw new BadRequestException(e);
+    }
   }
 
   /**

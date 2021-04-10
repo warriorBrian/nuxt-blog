@@ -1,8 +1,8 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn, OneToMany, ManyToMany, JoinTable } from 'typeorm';
 import {BaseEntity} from './BaseEntity';
 import {UsersEntity} from './users.entity';
 import {CommentEntity} from './comment.entity';
-
+import {TagsEntity} from './tags.entity';
 @Entity('article')
 export class ArticleEntity extends BaseEntity {
   @PrimaryGeneratedColumn()
@@ -26,5 +26,17 @@ export class ArticleEntity extends BaseEntity {
 
   @OneToMany(() => CommentEntity, comment => comment.article)
   comments: CommentEntity
+
+  @ManyToMany(() => TagsEntity, tag => tag.articleLists)
+  @JoinTable({
+    name: 'article_relations_tag',
+    joinColumn: {
+      name: 'article_id'
+    },
+    inverseJoinColumn: {
+      name: 'tag_id'
+    }
+  })
+  tags: TagsEntity[]
 
 }
