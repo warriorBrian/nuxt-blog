@@ -27,15 +27,28 @@ export class ArticleService {
   public async getArticleList (query, user) {
     const {page, pageSize} = paging(query.page, query.pageSize);
     const data = await this.articleRepository.createQueryBuilder('article')
-      .select(['article.id AS id','article.title AS title', 'article.introduction AS introduction', 'article.createdAt AS createdAt', 'article.updatedAt AS updatedAt', 'COUNT(comment.article_id) comment_count'])
+      .select(['article.id AS id','article.title AS title', 'article.introduction AS introduction', 'article.createdAt AS createdAt', 'article.updatedAt AS updatedAt', 'COUNT(comment.article_id) comment_count', 'tags.id', 'tags.name'])
       .where('article.user_id = :id', { id: user.id })
       .leftJoin('article.comments', 'comment')
+      .leftJoin('article.tags', 'tags')
       .groupBy('article.id')
+      .addGroupBy('tags.id')
       .orderBy({ 'article.updatedAt': 'DESC', 'article.id': 'DESC' })
       .offset(page).limit(pageSize)
       .getRawMany();
+
+    // 将标签处理为树形结构数据
+    const list = data.reduce((acc, val) => {
+      const {tags_id, tags_name, ...args} = val;
+      const findIndex = acc.findIndex(v => v.id === val.id);
+      !~findIndex && acc.push({...args, tags: []});
+      const findKey = acc.findIndex(k => k.id === val.id);
+      (!!~findKey && tags_id) && acc[findKey].tags.push({tags_id, tags_name});
+      return acc;
+    }, []);
+
     const count = await this.articleRepository.count();
-    return {lists: data, count};
+    return {lists: list, count};
     // const [data, count] = await this.articleRepository.createQueryBuilder('article')
     // .select(['article.id','article.title', 'article.introduction', 'article.createdAt', 'article.updatedAt'])
     // .where('article.user_id = :id', { id: user.id })
@@ -77,7 +90,7 @@ export class ArticleService {
    * */
   public async editArticlePresentation (articleId, user: UsersEntity) {
     const result = await this.articleRepository.createQueryBuilder('article')
-      .select(['article.id', 'article.title', 'article.content', 'article.introduction', 'article.original', 'tags'])
+      .select(['article.id', 'article.title', 'article.content', 'article.introduction', 'article.original', 'tags.id', 'tags.name'])
       .leftJoin('article.tags', 'tags')
       .where('article.id = :articleId', {articleId})
       .andWhere('article.user_id = :userId', {userId: user.id})
