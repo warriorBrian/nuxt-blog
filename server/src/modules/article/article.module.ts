@@ -12,6 +12,7 @@ import { BlacklistEntity } from 'src/entity/blacklist.entity';
 import { OptionsEntity } from 'src/entity/options.entity';
 import {TagsEntity} from 'src/entity/tags.entity';
 import {ArticleRelationsTagsEntity} from 'src/entity/articleRelationsTags.entity';
+import {CommentEntity} from 'src/entity/comment.entity';
 import { LocationModule } from 'src/modules/location/location.module';
 
 // 图片上传模块
@@ -22,7 +23,7 @@ import {UploadModule} from 'src/upload/upload.module';
     RateLimiterModule,
     AuthModule,
     LocationModule,
-    TypeOrmModule.forFeature([ArticleEntity, BlacklistEntity, OptionsEntity, TagsEntity, ArticleRelationsTagsEntity]),
+    TypeOrmModule.forFeature([ArticleEntity, BlacklistEntity, OptionsEntity, TagsEntity, ArticleRelationsTagsEntity, CommentEntity]),
     UploadModule.register()
   ],
   providers: [ArticleService],

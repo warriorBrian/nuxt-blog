@@ -7,6 +7,7 @@ import {ArticleEntity} from 'src/entity/article.entity';
 import {UsersEntity} from 'src/entity/users.entity';
 import {TagsEntity} from 'src/entity/tags.entity';
 import {ArticleRelationsTagsEntity} from 'src/entity/articleRelationsTags.entity';
+import {CommentEntity} from 'src/entity/comment.entity';
 import {plainToClass} from 'class-transformer';
 import {MESSAGES} from 'src/core/enums/message.enum';
 import { paging } from 'src/core/lib';
@@ -20,6 +21,7 @@ export class ArticleService {
     @InjectRepository(ArticleEntity) private readonly articleRepository: Repository<ArticleEntity>,
     @InjectRepository(TagsEntity) private readonly tagsRepository: Repository<TagsEntity>,
     @InjectRepository(ArticleRelationsTagsEntity) private readonly articleRelationsRepository: Repository<ArticleRelationsTagsEntity>,
+    @InjectRepository(CommentEntity) private readonly commentRepository: Repository<CommentEntity>,
     private readonly uploadService: UploadService,
     private readonly connection: Connection
   ) {}
@@ -218,6 +220,12 @@ export class ArticleService {
 
       // 同时删除关联表
       await queryRunner.manager.createQueryBuilder(ArticleRelationsTagsEntity, 'relations')
+        .delete()
+        .where('article_id IN (:...id)', {id: coverValue})
+        .execute();
+
+      // 同时删除关联评论
+      await queryRunner.manager.createQueryBuilder(CommentEntity, 'comment')
         .delete()
         .where('article_id IN (:...id)', {id: coverValue})
         .execute();
