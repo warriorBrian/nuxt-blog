@@ -17,6 +17,7 @@ import paging from './paging'
 import getTokenToString from './getTokenToString';
 import validateFormat from './validateFormat';
 import bufferToStream from './bufferToStream';
+import groupBy from './groupBy'
 
 export {
   md5,
@@ -33,5 +34,6 @@ export {
   paging,
   getTokenToString,
   validateFormat,
-  bufferToStream
+  bufferToStream,
+  groupBy
 }

@@ -8,5 +8,6 @@ export enum MESSAGES {
   COMMENT_CLOSE = '评论功能已经关闭',
   DATA_NOT_EXISTS_ERROR = '数据不存在',
   FILE_NOT_EXISTS_ERROR = '文件不存在',
-  NOT_SUPPORT_OTHER_METHOD = '暂不支持其他方式'
+  NOT_SUPPORT_OTHER_METHOD = '暂不支持其他方式',
+  TAG_NAME_ALREADY_EXISTS_ERROR = '标签名称已存在'
 }
