@@ -9,5 +9,9 @@
   "entities": ["dist/**/*.entity{.ts,.js}"],
   "subscribers": ["dist/subscribers/*{.ts,.js}"],
   "migrations": ["dist/migration/*.js"],
-  "cli": { "migrationsDir": "migration" }
+  "cli": { "migrationsDir": "migration" },
+  "extra": {
+    "charset": "utf8mb4_unicode_ci"
+  },
+  "logging": false
 }
