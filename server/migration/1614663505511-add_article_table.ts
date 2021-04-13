@@ -15,7 +15,7 @@ export class addArticleTable1614663505511 implements MigrationInterface {
         \`createdAt\` INT(11) DEFAULT 0,
         \`updatedAt\` INT(11) DEFAULT 0,
         UNIQUE KEY(\`title\`)
-        )
+        ) DEFAULT CHARSET utf8mb4 COLLATE utf8mb4_unicode_ci
       `);
     }
 
