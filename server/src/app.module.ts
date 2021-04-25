@@ -11,6 +11,7 @@ import {BlacklistModule} from 'src/modules/blackList/blacklist.module';
 import {CommentModule} from 'src/modules/comment/comment.module';
 import {UploadPicModule} from 'src/modules/uploadPic/uploadPic.module';
 import {ArchiveModule} from 'src/modules/archive/archive.module';
+import {SiteConfigModule} from 'src/modules/siteConfig/siteConfig.module';
 
 import {TypeOrmModule} from '@nestjs/typeorm';
 
@@ -29,7 +30,8 @@ import {ResponseInterceptor} from 'src/interceptors/response.interceptor';
     BlacklistModule,
     CommentModule,
     UploadPicModule,
-    ArchiveModule
+    ArchiveModule,
+    SiteConfigModule
   ],
   providers: [
     {

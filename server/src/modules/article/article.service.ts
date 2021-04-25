@@ -67,8 +67,9 @@ export class ArticleService {
   public async getFrontArticleList (query) {
     const {page, pageSize} = paging(query.page, query.pageSize);
     const [data, count] = await this.articleRepository.createQueryBuilder('article')
-      .select(['article.id','article.title', 'article.introduction', 'user.username'])
+      .select(['article.id','article.title', 'article.introduction', 'article.createdAt', 'user.username', 'tags.id', 'tags.name'])
       .leftJoin('article.user', 'user', 'article.user_id = user.id')
+      .leftJoin('article.tags', 'tags')
       .orderBy({ 'article.createdAt': 'DESC', 'article.id': 'DESC' })
       .offset(page).limit(pageSize)
       .getManyAndCount();
@@ -80,8 +81,9 @@ export class ArticleService {
    * */
   public async getArticleDetail (articleId) {
     const result = await this.articleRepository.createQueryBuilder('article')
-      .select(['article.id', 'article.title', 'article.content', 'article.createdAt', 'article.updatedAt', 'user.username'])
+      .select(['article.id', 'article.title', 'article.content', 'article.createdAt', 'article.updatedAt', 'user.username', 'tags.id', 'tags.name'])
       .leftJoin('article.user', 'user', 'article.user_id = user.id')
+      .leftJoin('article.tags', 'tags')
       .where('article.id = :articleId', {articleId})
       .getOne();
     return { result };

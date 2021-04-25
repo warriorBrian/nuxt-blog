@@ -130,23 +130,6 @@ export class CommentController {
     return this.commentService.detectionSensitiveWords(body);
   }
 
-  @Get('test')
-  // @UseInterceptors(FileInterceptor('file'))
-  // @UploadFile('files', 'uploads/keywords', { filter: ['txt'] })
-  protected async test (@UploadedFile() files) {
-
-
-    // formUploader.putStream(uploadToken, files.originalname, readableStream, putExtra, function (respErr, respBody, respInfo) {
-    //   console.log(respBody, 'respBody');
-    // });
-    // const bucketManager = new qiniu.rs.BucketManager(mac, config);
-    // bucketManager.stat('blog', '5E47F6C5AF2E624CCCA9D938DAAD3860.jpg', function(err, respBody, respInfo) {
-    //   console.log(respBody);
-    //   console.log(respInfo);
-    // });
-
-  }
-
 }
 
 
