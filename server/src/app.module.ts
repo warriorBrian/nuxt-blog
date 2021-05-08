@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import {APP_FILTER, APP_INTERCEPTOR} from '@nestjs/core';
+import { ConfigModule } from '@nestjs/config';
 
 import {ArticleModule} from 'src/modules/article/article.module';
 import {AuthModule} from 'src/auth/auth.module';
@@ -12,6 +13,9 @@ import {CommentModule} from 'src/modules/comment/comment.module';
 import {UploadPicModule} from 'src/modules/uploadPic/uploadPic.module';
 import {ArchiveModule} from 'src/modules/archive/archive.module';
 import {SiteConfigModule} from 'src/modules/siteConfig/siteConfig.module';
+import {GeetestModule} from 'src/modules/geetest/geetest.module';
+
+import {PrometheusModule} from 'src/modules/prometheus/prometheus.module';
 
 import {TypeOrmModule} from '@nestjs/typeorm';
 
@@ -20,6 +24,7 @@ import {ResponseInterceptor} from 'src/interceptors/response.interceptor';
 
 @Module({
   imports: [
+    ConfigModule.forRoot(),
     TypeOrmModule.forRoot(),
     AuthModule,
     LoginModule,
@@ -31,7 +36,9 @@ import {ResponseInterceptor} from 'src/interceptors/response.interceptor';
     CommentModule,
     UploadPicModule,
     ArchiveModule,
-    SiteConfigModule
+    SiteConfigModule,
+    GeetestModule,
+    PrometheusModule
   ],
   providers: [
     {
