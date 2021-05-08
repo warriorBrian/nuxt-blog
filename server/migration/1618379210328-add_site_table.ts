@@ -21,6 +21,8 @@ export class addSiteTable1618379210328 implements MigrationInterface {
       `);
       // 插入默认site表数据
       await queryRunner.query("INSERT INTO `site` (`title`, `type`, `link`, `linkType`) VALUES ('blog', 'index', 'index', 0)");
+      // 插入默认归档数据
+      await queryRunner.query("INSERT INTO `site` (`title`, `type`, `link`, `linkType`) VALUES ('归档', 'navigation', '/archive', 0)")
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
