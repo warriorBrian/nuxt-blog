@@ -2,7 +2,7 @@ import {Injectable, BadRequestException} from '@nestjs/common';
 import {InjectRepository} from '@nestjs/typeorm';
 import {Repository, Connection} from 'typeorm';
 import {SiteEntity} from 'src/entity/site.entity';
-import {paging} from 'src/core/lib';
+import {OptionsEntity} from 'src/entity/options.entity';
 import {UploadService} from 'src/upload/upload.service';
 
 @Injectable()
@@ -12,7 +12,8 @@ export class SiteConfigService {
   constructor(
     private connection: Connection,
     private readonly uploadService: UploadService,
-    @InjectRepository(SiteEntity) private readonly siteRepository: Repository<SiteEntity>
+    @InjectRepository(SiteEntity) private readonly siteRepository: Repository<SiteEntity>,
+    @InjectRepository(OptionsEntity) private readonly optionsRepository: Repository<OptionsEntity>
   ) {}
 
   /**
@@ -180,6 +181,22 @@ export class SiteConfigService {
    * */
   public async siteConfigDeletePic ({ id }) {
     return this.uploadService.delete(id, 'site');
+  }
+
+  /**
+   * @desc 系统配置 => 配置中心站点配置
+   * @desc not auth
+   * */
+  public async getSystemSiteConfigHandle () {
+    const siteConfig = await this.optionsRepository.findOne({ key: 'site_config' });
+    return siteConfig.value;
+  }
+
+  public async setSystemSiteConfigHandle (body) {
+    const siteConfig = await this.optionsRepository.findOne({key: 'site_config'});
+    const data = Object.assign({}, siteConfig.value, body);
+    await this.optionsRepository.update({key: 'site_config'}, { key: 'site_config', value: data });
+    return { message: '修改成功' };
   }
 
 }

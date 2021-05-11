@@ -86,4 +86,23 @@ export class SiteConfigController {
     return this.siteConfigService.siteConfigDeletePic(body);
   }
 
+  /**
+   * @desc 系统配置 => 配置中心站点配置
+   * @desc not auth
+   * */
+  @Get('site')
+  protected getSystemSiteConfigHandle () {
+    return this.siteConfigService.getSystemSiteConfigHandle();
+  }
+
+  /**
+   * @desc 系统配置 => 保存配置中心站点配置
+   * */
+  @AuthStrategy()
+  @Post('site')
+  @UsePipes(new ValidateToEmptyPipe([ 'title', 'description', 'keywords', 'author' ]))
+  protected setSystemSiteConfigHandle (@Body() body) {
+    return this.siteConfigService.setSystemSiteConfigHandle(body);
+  }
+
 }
