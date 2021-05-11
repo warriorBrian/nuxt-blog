@@ -81,7 +81,7 @@ export class ArticleService {
    * */
   public async getArticleDetail (articleId) {
     const result = await this.articleRepository.createQueryBuilder('article')
-      .select(['article.id', 'article.title', 'article.content', 'article.createdAt', 'article.updatedAt', 'user.username', 'tags.id', 'tags.name'])
+      .select(['article.id', 'article.title', 'article.introduction', 'article.content', 'article.createdAt', 'article.updatedAt', 'user.username', 'tags.id', 'tags.name'])
       .leftJoin('article.user', 'user', 'article.user_id = user.id')
       .leftJoin('article.tags', 'tags')
       .where('article.id = :articleId', {articleId})
