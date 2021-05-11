@@ -7,6 +7,8 @@ import {plainToClass} from 'class-transformer';
 import {LocationService} from 'src/modules/location/location.service';
 import {paging, toInteger} from 'src/core/lib';
 
+import {GeetestService} from 'src/modules/geetest/geetest.service';
+
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 // const Geetest = require('geetest');
 
@@ -28,7 +30,8 @@ export class CommentService {
     @InjectRepository(OptionsEntity) private readonly optionsRepository: Repository<OptionsEntity>,
     @InjectRepository(ArticleEntity) private readonly articleRepository: Repository<ArticleEntity>,
     @InjectRepository(FileEntity) private readonly fileRepository: Repository<FileEntity>,
-    private readonly locationService: LocationService
+    private readonly locationService: LocationService,
+    private readonly geetestService: GeetestService
   ) {
     this.initKeywords('uploads/keywords');
   }
@@ -136,9 +139,10 @@ export class CommentService {
    * */
   public async commentRelevanceList (query) {
     const [data, count] = await this.commentRepository.createQueryBuilder('comment')
-      .select(['comment.id', 'comment.email', 'comment.content', 'comment.pass'])
+      .select(['comment.id', 'comment.username', 'comment.content', 'comment.sensitive', 'comment.pass', 'comment.createdAt'])
       .where('comment.article_id = :article_id', {article_id: query.article_id})
       .andWhere('comment.status = :status', {status: 1})
+      .orderBy({ 'comment.createdAt': 'DESC', 'comment.id': 'DESC' })
       .getManyAndCount();
     return {list: data, count};
   }
@@ -149,7 +153,7 @@ export class CommentService {
    * @return create result
    * */
   public async createComment (data) {
-    const { email, content, article_id, username } = data;
+    const { email, content, article_id, username, captcha } = data;
     const value = await this.optionsRepository.createQueryBuilder('options')
       .select(['options.key', 'options.value'])
       .where('options.key IN (:...keys)', { keys: ['webservice_key', 'comment_status', 'comment_record_ip' ] })
@@ -161,6 +165,22 @@ export class CommentService {
     if (!comment_status) {
       // 评论功能关闭
       throw new BadRequestException(MESSAGES.COMMENT_CLOSE);
+    }
+
+    // 校验极验
+    const { success } = await this.geetestService.getCaptchaOptions();
+    const everyValidate = Object.keys(captcha).every(v => v !== '');
+    // 极验已经正常配置
+    if (success) {
+      // 校验是否前端传递过来的值为空
+      if (!everyValidate) {
+        throw new BadRequestException('极验校验不能为空');
+      }
+      // 配置校验是否通过,将从body中获取captcha来进行校验
+      const validateStatus = await this.geetestService.validateCaptcha({ ...captcha });
+      if (!validateStatus) {
+        throw new BadRequestException('极验校验失败，无法创建评论');
+      }
     }
 
     if (comment_record_ip) {
@@ -206,17 +226,23 @@ export class CommentService {
   /**
    * ===================评论配置=========================
    * */
+  /**
+   * @desc 获取评论开启状态
+   * @desc not auth
+   * */
+  public async getCommentSwitchStatus (keys: Array<string>) {
+    return await this.getCommentStatus(keys);
+  }
 
   /**
    * @desc 获取评论开启状态及记录IP状态
    * */
-  public async getCommentStatus () {
+  public async getCommentStatus (keys : Array<string>) {
     const commentStatusLists = await this.optionsRepository.createQueryBuilder('options')
       .select(['options.key', 'options.value'])
-      .where(`options.key IN (:...key)`, {key: ['comment_status', 'comment_record_ip']})
+      .where(`options.key IN (:...key)`, {key: keys})
       .getMany();
-    const data = commentStatusLists.reduce((acc,val) => (void(acc[val.key] = val.value) || acc), {});
-    return data;
+    return commentStatusLists.reduce((acc,val) => (void(acc[val.key] = val.value) || acc), {});
   }
 
   /**
@@ -296,5 +322,9 @@ export class CommentService {
     const { words, pass } = await this.mint.filter(word);
     return { words, pass };
   }
+
+  /**
+   * ===================极验配置=========================
+   * */
 
 }

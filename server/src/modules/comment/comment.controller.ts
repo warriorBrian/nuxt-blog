@@ -1,12 +1,11 @@
 import {Controller, Post, Body, Query, Get, UsePipes, Delete, UploadedFile, UseInterceptors, HttpService} from '@nestjs/common';
-import {FileInterceptor} from '@nestjs/platform-express';
 import {CommentService} from './comment.service';
 import {AuthStrategy} from 'src/auth/auth.decorator';
 import {ValidateToEmptyPipe} from 'src/pipe/validateToEmptyPipe.pipe';
 
 import { UploadFile } from 'src/core/decorators/file.decorators'
 
-import * as qiniu from 'qiniu';
+import { RateLimit, RateLimiterInterceptor } from 'nestjs-rate-limiter';
 
 @Controller('comment')
 export class CommentController {
@@ -52,6 +51,8 @@ export class CommentController {
    * */
   @Post()
   @UsePipes(new ValidateToEmptyPipe([ 'email', 'username', 'content', 'article_id' ]))
+  @RateLimit({ points: 5, duration: 60})
+  @UseInterceptors(RateLimiterInterceptor)
   protected createComment (@Body() body) {
     return this.commentService.createComment(body);
   }
@@ -70,12 +71,20 @@ export class CommentController {
    * ===================评论配置=========================
    * */
   /**
+   * @desc 获取平乱开启状态
+   * @desc not auth
+   * */
+  @Get('/switch')
+  protected getCommentSwitchStatus () {
+    return this.commentService.getCommentSwitchStatus(['comment_status']);
+  }
+  /**
    * @desc 获取评论开启状态及记录IP状态
    * */
   @AuthStrategy()
   @Get('/status/switch')
   protected getCommentStatus () {
-    return this.commentService.getCommentStatus();
+    return this.commentService.getCommentStatus(['comment_status', 'comment_record_ip']);
   }
 
   /**
