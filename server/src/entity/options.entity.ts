@@ -11,7 +11,10 @@ export class OptionsEntity {
   @Column({
     transformer: {
       to(value: any): any {
-        return value
+        if (typeof value == 'object') {
+          return JSON.stringify(value);
+        }
+        return value;
       },
       from(value: any): any {
         if (value == null) return value;
