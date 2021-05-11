@@ -62,7 +62,7 @@ export class ArticleController {
    * @desc Required auth
    * */
   @AuthStrategy()
-  @UsePipes(new ValidateToEmptyPipe(['id', 'title', 'content', 'introduction', 'original', 'tag_id']))
+  @UsePipes(new ValidateToEmptyPipe(['id', 'title', 'content', 'introduction', 'original', 'tag_id', 'banner']))
   @Put()
   protected async editArticle (@Body() body: Required<ModifyArticle>, @Headers('authorization') authorization) {
     const { user } = await this.authService.validate(getTokenToString(authorization));
@@ -74,7 +74,7 @@ export class ArticleController {
    * @desc Required auth
    * */
   @AuthStrategy()
-  @UsePipes(new ValidateToEmptyPipe(['title', 'content', 'original', 'introduction', 'tag_id']))
+  @UsePipes(new ValidateToEmptyPipe(['title', 'content', 'original', 'introduction', 'tag_id', 'banner']))
   @RateLimit({ points: 10, duration: 60})
   @UseInterceptors(RateLimiterInterceptor)
   @Post('create')

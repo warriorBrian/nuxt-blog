@@ -67,7 +67,7 @@ export class ArticleService {
   public async getFrontArticleList (query) {
     const {page, pageSize} = paging(query.page, query.pageSize);
     const [data, count] = await this.articleRepository.createQueryBuilder('article')
-      .select(['article.id','article.title', 'article.introduction', 'article.createdAt', 'user.username', 'tags.id', 'tags.name'])
+      .select(['article.id','article.title', 'article.introduction', 'article.banner', 'article.createdAt', 'user.username', 'tags.id', 'tags.name'])
       .leftJoin('article.user', 'user', 'article.user_id = user.id')
       .leftJoin('article.tags', 'tags')
       .orderBy({ 'article.createdAt': 'DESC', 'article.id': 'DESC' })
@@ -81,7 +81,7 @@ export class ArticleService {
    * */
   public async getArticleDetail (articleId) {
     const result = await this.articleRepository.createQueryBuilder('article')
-      .select(['article.id', 'article.title', 'article.introduction', 'article.content', 'article.createdAt', 'article.updatedAt', 'user.username', 'tags.id', 'tags.name'])
+      .select(['article.id', 'article.title', 'article.introduction', 'article.banner', 'article.content', 'article.createdAt', 'article.updatedAt', 'user.username', 'tags.id', 'tags.name'])
       .leftJoin('article.user', 'user', 'article.user_id = user.id')
       .leftJoin('article.tags', 'tags')
       .where('article.id = :articleId', {articleId})
@@ -94,7 +94,7 @@ export class ArticleService {
    * */
   public async editArticlePresentation (articleId, user: UsersEntity) {
     const result = await this.articleRepository.createQueryBuilder('article')
-      .select(['article.id', 'article.title', 'article.content', 'article.introduction', 'article.original', 'tags.id', 'tags.name'])
+      .select(['article.id', 'article.title', 'article.content', 'article.banner', 'article.introduction', 'article.original', 'tags.id', 'tags.name'])
       .leftJoin('article.tags', 'tags')
       .where('article.id = :articleId', {articleId})
       .andWhere('article.user_id = :userId', {userId: user.id})
@@ -106,8 +106,8 @@ export class ArticleService {
    * @desc 保存编辑
    * */
   public async editArticle (data, user: UsersEntity) {
-    const {id, title, content, introduction, original, tag_id} = data;
-    const value = plainToClass(ArticleEntity, {title, content, introduction, original});
+    const {id, title, content, introduction, original, tag_id, banner} = data;
+    const value = plainToClass(ArticleEntity, {title, content, introduction, original, banner});
 
     const queryRunner = this.connection.createQueryRunner();
 
@@ -158,12 +158,12 @@ export class ArticleService {
    * @desc Create article service
    * */
   public async createArticle (data, user: UsersEntity) {
-    const {title, content, original, introduction, tag_id} = data;
+    const {title, content, original, introduction, tag_id, banner} = data;
     const findDuplicationTitle = await this.articleRepository.findOne({title});
     if (findDuplicationTitle) {
       throw new BadRequestException(MESSAGES.TITLE_ALREADY_EXISTS_ERROR);
     }
-    const value = plainToClass(ArticleEntity, {title, content, user, introduction, original});
+    const value = plainToClass(ArticleEntity, {title, content, user, introduction, original, banner});
 
     const queryRunner = this.connection.createQueryRunner();
 
@@ -248,14 +248,14 @@ export class ArticleService {
    * @desc 文章上传图片
    * */
   public async articleUploadPic (file) {
-    return await this.uploadService.upload(file, 'images');
+    return await this.uploadService.upload(file, 'article');
   }
 
   /**
    * @desc 删除图片
    * */
   public async articleDeletePic ({ id }) {
-    return await this.uploadService.delete(id, 'images');
+    return await this.uploadService.delete(id, 'article');
   }
 
 }

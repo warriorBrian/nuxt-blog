@@ -17,6 +17,21 @@ export class ArticleEntity extends BaseEntity {
   @Column()
   introduction: string;
 
+  @Column({
+    nullable: true,
+    transformer: {
+      to(value: any): any {
+        if (value == '' || value == null) return '';
+        return JSON.stringify(value);
+      },
+      from(value: any): any {
+        if (value == null || value == '') return '';
+        return JSON.parse(value);
+      }
+    }
+  })
+  banner: string;
+
   @Column()
   original: string;
 

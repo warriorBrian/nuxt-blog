@@ -11,6 +11,7 @@ export class addArticleTable1614663505511 implements MigrationInterface {
         \`content\` LONGTEXT NOT NULL,
         introduction TEXT NOT NULL,
         original LONGTEXT NOT NULL,
+        banner VARCHAR(255) DEFAULT NULL COMMENT "站点banner",
         \`user_id\` INT(11) DEFAULT NULL,
         \`createdAt\` INT(11) DEFAULT 0,
         \`updatedAt\` INT(11) DEFAULT 0,
