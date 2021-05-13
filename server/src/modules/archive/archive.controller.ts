@@ -27,6 +27,25 @@ export class ArchiveController {
   }
 
   /**
+   * @desc 获取单个标签详情
+   * @desc not auth
+   * */
+  @Get('tag/single')
+  protected getSingleTagHandle (@Query() query) {
+    return this.archiveService.getSingleTagHandle(query);
+  }
+
+  /**
+   * @desc 获取标签关联文章列表
+   * @desc not auth
+   * */
+  @Get('tag/detail')
+  @UsePipes(new ValidateToEmptyPipe(['id']))
+  protected getTagRelationsArticle (@Query() query) {
+    return this.archiveService.getTagRelationsArticle(query);
+  }
+
+  /**
    * @desc 创建标签
    * */
   @AuthStrategy()

@@ -43,6 +43,31 @@ export class ArchiveService {
   }
 
   /**
+   * @desc 获取单个标签详情
+   * @desc not auth
+   * */
+  public async getSingleTagHandle ({ id }) {
+    return await this.tagsRepository.findOne({id});
+  }
+
+  /**
+   * @desc 获取标签关联文章列表
+   * @desc not auth
+   * */
+  public async getTagRelationsArticle ({ id }) {
+    const tagRelationsArticleLists = await this.articleRelationsRepository.createQueryBuilder('articleRelations')
+      .select(['article.title AS title', 'article.id AS id', 'article.createdAt AS createdAt', 'article.banner AS banner'])
+      .leftJoin('articleRelations.article_id', 'article')
+      .where('articleRelations.tag_id =:id', { id })
+      .getRawMany();
+    const handleArticleLists = tagRelationsArticleLists.map(v => {
+      if (v.banner == null || v.banner == '') return { ...v, banner: '' };
+      return { ...v, banner: JSON.parse(v.banner) }
+    });
+    return { list: handleArticleLists };
+  }
+
+  /**
    * @desc 创建标签
    * */
   public async createTagHandle (body) {
