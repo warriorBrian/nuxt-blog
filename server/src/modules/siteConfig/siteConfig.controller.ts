@@ -40,7 +40,6 @@ export class SiteConfigController {
 
   /**
    * @desc 创建站点信息
-   * @desc not auth
    * */
   @AuthStrategy()
   @Post()
@@ -84,6 +83,16 @@ export class SiteConfigController {
   @UsePipes(new ValidateToEmptyPipe(['id']))
   protected siteConfigDeletePic (@Body() body) {
     return this.siteConfigService.siteConfigDeletePic(body);
+  }
+
+  /**
+   * @desc 修改站点信息显示状态
+   * */
+  @AuthStrategy()
+  @Post('status')
+  @UsePipes(new ValidateToEmptyPipe(['id', 'status']))
+  protected siteConfigChangeStatus (@Body() body) {
+    return this.siteConfigService.siteConfigChangeStatus(body);
   }
 
   /**

@@ -20,8 +20,10 @@ export class SiteConfigService {
    * @desc 获取站点配置信息列表
    * @desc not auth
    * */
-  public async getSiteConfigLists () {
+  public async getSiteConfigLists (where = true) {
     const siteLists = await this.siteRepository.createQueryBuilder('site')
+      // 当默认为查status为1，否则查所有数据
+      .where('site.status IN (:...status)', { status: where ? [ 1 ] : [ 0, 1 ] })
       .orderBy({'site.parentId': 'ASC', 'site.id': 'ASC'})
       .getMany();
     const handleData = siteLists.reduce((acc, val) => {
@@ -39,20 +41,7 @@ export class SiteConfigService {
    * @desc 获取站点配置信息列表
    * */
   public async getSiteConfigHandle (query) {
-    return this.getSiteConfigLists();
-    // const {page, pageSize} = paging(query.page, query.pageSize);
-    // const siteLists = await this.siteRepository.createQueryBuilder('site')
-    //   .select()
-    //   .offset(page).limit(pageSize)
-    //   .orderBy({"site.type": 'ASC', 'site.id': 'DESC'})
-    //   .getMany();
-    // const res = siteLists.reduce((acc, val) => {
-    //   const index = acc.findIndex(v => v.id === val.parentId);
-    //   const relation = !!~index ? acc[index].title : '';
-    //   acc.push({...val, relation});
-    //   return acc;
-    // }, []);
-    // return { list: res };
+    return this.getSiteConfigLists(false);
   }
 
   /**
@@ -181,6 +170,36 @@ export class SiteConfigService {
    * */
   public async siteConfigDeletePic ({ id }) {
     return this.uploadService.delete(id, 'site');
+  }
+
+  /**
+   * @desc 修改站点信息显示状态
+   * */
+  public async siteConfigChangeStatus ({ id, status }) {
+    const findDuplicationId = await this.siteRepository.createQueryBuilder('site')
+      .select(['site.id', 'site.banner'])
+      .where('site.parentId =:id', {id})
+      .andWhere('site.type =:type', {type: 'navigation'})
+      .getMany();
+    // 获取子集id列表
+    const idLists = findDuplicationId.map(v => v.id);
+      await this.siteRepository.createQueryBuilder('site')
+        .update()
+        .set({ status })
+        .where('site.id =:id', {id})
+        .execute();
+
+      // 如果存在子集，则更新子集显示状态
+      if (idLists.length) {
+        await this.siteRepository.createQueryBuilder('site')
+          .update()
+          .set({ status })
+          .where('site.id IN (:...id)', { id: idLists })
+          .execute();
+      }
+
+    return { message: '修改成功' };
+
   }
 
   /**

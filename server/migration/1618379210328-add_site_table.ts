@@ -14,6 +14,7 @@ export class addSiteTable1618379210328 implements MigrationInterface {
           link VARCHAR(255) DEFAULT NULL COMMENT "导航链接",
           linkType INT(11) DEFAULT 0 COMMENT "跳转类型",
           banner VARCHAR(255) DEFAULT NULL COMMENT "站点banner",
+          status INT(1) DEFAULT 1 COMMENT "显示状态",
           parentId INT(11) DEFAULT 0 COMMENT "父级id，处理为树形结构",
           more TEXT DEFAULT NULL COMMENT "更多配置",
           UNIQUE KEY(\`title\`)

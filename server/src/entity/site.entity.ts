@@ -60,6 +60,9 @@ export class SiteEntity {
   banner: string;
 
   @Column()
+  status: number;
+
+  @Column()
   parentId: number;
 
   @Column({
