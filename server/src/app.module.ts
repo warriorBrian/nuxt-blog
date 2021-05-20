@@ -14,8 +14,9 @@ import {UploadPicModule} from 'src/modules/uploadPic/uploadPic.module';
 import {ArchiveModule} from 'src/modules/archive/archive.module';
 import {SiteConfigModule} from 'src/modules/siteConfig/siteConfig.module';
 import {GeetestModule} from 'src/modules/geetest/geetest.module';
-
 import {PrometheusModule} from 'src/modules/prometheus/prometheus.module';
+import { ChainModule } from 'src/modules/chain/chain.module';
+import { EmailModule } from 'src/modules/email/email.module';
 
 import {TypeOrmModule} from '@nestjs/typeorm';
 
@@ -38,7 +39,9 @@ import {ResponseInterceptor} from 'src/interceptors/response.interceptor';
     ArchiveModule,
     SiteConfigModule,
     GeetestModule,
-    PrometheusModule
+    PrometheusModule,
+    ChainModule,
+    EmailModule
   ],
   providers: [
     {
