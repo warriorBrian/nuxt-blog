@@ -1,0 +1,92 @@
+/* main */
+@layout-prefix-cls: ~"@{pre-fix}-layout";
+@aside-width: 200px !important;
+@main: 100px;
+@full-height: 100vh;
+@linear:linear-gradient(270deg,rgba(46,180,215,0),rgba(46,180,215,.4))!important;
+/* main */
+
+// dashBoard-layout
+.@{layout-prefix-cls} {
+  & /deep/ .el-aside {
+    float: left;
+  }
+  /*layout header*/
+  & /deep/ .el-main {
+    padding: 0;
+  }
+  & .doshBoard-layout-header {
+    position: fixed;
+    left: 199px;
+    top: 0;
+    right: 0;
+    z-index: 99;
+    & .router-name {
+      position: absolute;
+      left: 20px;
+      z-index: 999;
+      top: 20px;
+    }
+    .doshBoard-layout-header-userInfo {
+      float:right;
+    }
+  }
+  & .@{layout-prefix-cls}-content {
+    margin: 80px 10px 10px;
+  }
+  /*layout aside*/
+  .dashBoard-layout-NavLeft {
+    position: fixed;
+    left:0;
+    top:0;
+    z-index: 99;
+    width: @aside-width;
+    height: 100vh;
+  }
+  & .el-aside.doshBoard-layout-aside {
+    width: @aside-width;
+    & .el-menu /deep/ {
+      height: 100%;
+      & li {
+        text-align: center;
+        color: #fff;
+      }
+      & li:hover {
+        cursor: pointer;
+        background:@linear;
+      }
+    }
+  }
+  & .dashBoard-layout-content /deep/ {
+    & .children-router {
+      padding: 0 20px;
+    }
+  }
+}
+// active style
+/deep/ .active-menu {
+  //background-color:rgb(64, 74, 80) !important;
+  background:@linear;
+  &:hover {
+    background:@linear;
+  }
+  &:before {
+    content: "";
+    display: block;
+    float: left;
+    width: 3px;
+    height: 100%;
+    position: absolute;
+    left:0;
+    background-color: #2eb4d7;
+  }
+}
+/deep/ .children-menu-item {
+  text-indent: 10px;
+}
+.navLeft-menu-item-icon {
+  color:#fff;
+  margin-left: -20px;
+  margin-top: -1px;
+  font-size: 15px;
+}

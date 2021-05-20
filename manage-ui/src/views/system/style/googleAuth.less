@@ -1,0 +1,77 @@
+/* main */
+@googleAuth-prefix-cls: ~"googleAuth";
+
+/*开关配置*/
+.@{googleAuth-prefix-cls}-switch-content {
+  display:flex;
+  justify-content: flex-start;
+  align-items: center;
+  & .@{googleAuth-prefix-cls}-switch-text {
+    margin-right: 10px;
+  }
+}
+
+/*谷歌配置样式区域*/
+.@{googleAuth-prefix-cls}-config {
+  margin-top: @default-title-top;
+}
+
+/*谷歌二维码样式*/
+.@{googleAuth-prefix-cls}-qrCode-content {
+  position: relative;
+  .@{googleAuth-prefix-cls}-qrCode {
+    min-height: 166px;
+  }
+  .@{googleAuth-prefix-cls}-qrCode-mask {
+    position: absolute;
+    width: 166px;
+    height: 166px;
+    opacity: 0;
+    top: 0;
+    left: 0;
+    z-index: 999;
+    &:hover {
+      opacity: 1;
+      background: rgba(101, 101, 101, 0.6);
+      transition: all .3s ease-in-out;
+      cursor: pointer;
+    }
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    .@{googleAuth-prefix-cls}-qrCode-mask-text {
+      margin-top: 5px;
+      color:#fff;
+    }
+    .@{googleAuth-prefix-cls}-qrCode-mask-icon {
+      color:#fff;
+      font-size: 26px;
+      font-weight: bold;
+    }
+  }
+}
+/*验证码测试区域*/
+.googleAuth-qrCode-test-content {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 350px;
+  .googleAuth-qrCode-test-input {
+    width: 170px;
+  }
+  .googleAuth-qrCode-test-btn {
+    margin-left: 20px;
+  }
+  .googleAuth-icon {
+    margin-left: 20px;
+  }
+  .el-icon-success {
+    font-size: 22px;
+    color:#67C23A;
+  }
+  .el-icon-error {
+    font-size: 22px;
+    color:#F56C6C;
+  }
+}

@@ -1,0 +1,49 @@
+// public
+@login-prefix-cls: dashBoard-login;
+@login-card: #fff;
+.center {
+  display:flex;
+  justify-content: center;
+  align-items: center;
+}
+@keyframes rotate {
+  to {
+    transform: translate3d(0, -0.5rem, 0);
+  }
+}
+.@{login-prefix-cls}-content {
+  height: 100%;
+  .@{login-prefix-cls}-container {
+    width: 100%;
+    height: 100%;
+    background:@background-color;
+    .center();
+  }
+  /*登录卡片*/
+  .@{login-prefix-cls}-card {
+    width: 340px;
+    min-height: 390px;
+    background:@login-card;
+    box-shadow: 0 5px 14px 0 rgba(22,109,132,.17);
+    padding: 25px;
+    box-sizing: border-box;
+    /*登录logo*/
+    .@{login-prefix-cls}-logo {
+      /*临时设置*/
+      background: url('./../../../assets/Dropbox.svg') no-repeat;
+      background-position: center center;
+      //animation: rotate 1s alternate infinite;
+      width:70px;
+      height: 64px;
+      margin:50px auto;
+    }
+    /*登录表单*/
+    .@{login-prefix-cls}-form {
+      width:100%;
+      margin:0 auto;
+      /deep/ .@{login-prefix-cls}-btn {
+        width: 100%;
+      }
+    }
+  }
+}

@@ -1,0 +1,59 @@
+.webservice-content {
+  & .webservice-input-content {
+    display:inline-block;
+    position: relative;
+    & /deep/ .webservice-key-input {
+      width: 360px;
+    }
+    & .webservice-paw-show {
+      width: 33px;
+      height: 18px;
+      line-height: 18px;
+      color: #fff;
+      font-size: 12px;
+      padding: 0;
+      background-color: #b8c7e6;
+      border-radius: 3px;
+      position: absolute;
+      top: 7px;
+      right: 10px;
+      z-index: 999;
+      outline: none;
+      border: none;
+      &:focus {
+        outline: none;
+        border: none;
+      }
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+  & .webservice-key-button {
+    margin-left: @default-margin-left;
+  }
+}
+
+.no-autofill-pwd {
+  /deep/ .el-input__inner {
+    -webkit-text-security: disc !important;
+  }
+}
+
+/*show location*/
+.webservice-location {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-top: 20px;
+  .webservice-location-ip {
+    color: @primary-text-color;
+  }
+  & /deep/ .webservice-location-address {
+    .webservice-location-ip;
+    margin-left: @default-margin-left;
+  }
+  & /deep/ .webservice-location-iso {
+    margin-left: 0;
+  }
+}

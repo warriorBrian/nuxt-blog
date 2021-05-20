@@ -1,0 +1,7 @@
+.el-submenu .el-menu-item {
+  min-width: 199px !important;
+}
+.el-input__inner {
+ height: 40px;
+ border-radius: 2px;
+}

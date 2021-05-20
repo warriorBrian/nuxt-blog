@@ -1,0 +1,84 @@
+.site-table-panel {
+  padding-top: 20px !important;
+}
+.site-edit {
+  margin-right: 10px;
+}
+.site-topBar {
+  margin: 10px 5px 10px 0;
+  display:flex;
+  justify-content: flex-end;
+  align-items: center;
+  & /deep/ .iconfont.icon-help1 {
+    font-size: 14px;
+  }
+}
+.site-drawer {
+  & /deep/ .el-drawer {
+    outline: none;
+  }
+  & /deep/ .el-drawer__header {
+    span {
+      outline: none;
+    }
+  }
+  & .site-drawer-content {
+    padding: 20px;
+    & .site-drawer-content-item {
+      color: #8c8c8c;
+      font-size: 14px;
+    }
+    & .site-drawer-title {
+      font-size: 15px;
+      position: relative;
+      padding-left: 10px;
+      &:before {
+        display: block;
+        position: absolute;
+        left: 0;
+        top: 50%;
+        -webkit-transform: translateY(-50%);
+        transform: translateY(-50%);
+        content: "";
+        width: 4px;
+        height: 80%;
+        background-color: #dfe2e5;
+      }
+    }
+  }
+}
+.site-status {
+  margin-left: 10px;
+}
+.site-status /deep/ .icon-yincang {
+  font-size: 13px;
+  color: #888;
+}
+.site-status /deep/ .icon-chakan1 {
+  font-size: 13px;
+  color: #888;
+}
+
+/*应用状态*/
+.little-status {
+  &:before {
+    content: "";
+    display:inline-block;
+    margin-right:5px;
+    margin-top:-2px;
+    vertical-align: middle;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+  }
+}
+.custom-enable {
+  &:before {
+    background: #45caad;
+  }
+}
+.custom-disable {
+  &:before {
+    background:#F1432C;
+  }
+}
