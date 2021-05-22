@@ -22,6 +22,6 @@ function convertURL (path) {
   if (reg.test(path)) {
     return path;
   }
-  return Object.is(env, 'development') ? `${proxyAddress + path}` : path;
+  return Object.is(env, 'development') ? `${proxyAddress + path}` : `${process.env.VUE_APP_API_PREFIX}${path}`;
 }
 export default convertURL;
