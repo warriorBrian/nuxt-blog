@@ -4,23 +4,23 @@
     <!-- email config -->
     <el-form :model="emailConfig" status-icon ref="emailForm" label-width="80px" class="emailForm">
       <el-form-item label="host" prop="pass">
-        <span v-if="!edit">{{ emailConfig.host }}</span>
+        <span v-if="!edit">{{ emailConfig.host || '暂无' }}</span>
         <el-input v-else type="text" size="small" v-model="emailConfig.host" autocomplete="off"></el-input>
       </el-form-item>
       <el-form-item label="port" prop="pass">
-        <span v-if="!edit">{{ emailConfig.port }}</span>
+        <span v-if="!edit">{{ emailConfig.port || '暂无' }}</span>
         <el-input v-else type="text" size="small" v-model="emailConfig.port" autocomplete="off"></el-input>
       </el-form-item>
       <el-form-item label="SSL">
-        <span v-if="!edit">{{ emailConfig.secure }}</span>
+        <span v-if="!edit">{{ emailConfig.secure || '暂无' }}</span>
         <el-checkbox v-else v-model="emailConfig.secure"></el-checkbox>
       </el-form-item>
       <el-form-item label="用户名" prop="pass">
-        <span v-if="!edit">{{ emailConfig.auth.user }}</span>
+        <span v-if="!edit">{{ emailConfig.auth.user || '暂无' }}</span>
         <el-input v-else type="text" size="small" v-model="emailConfig.auth.user" autocomplete="off"></el-input>
       </el-form-item>
       <el-form-item label="授权码" prop="pass">
-        <span v-if="!edit">{{ emailConfig.auth.pass }}</span>
+        <span v-if="!edit">{{ emailConfig.auth.pass || '暂无' }}</span>
         <el-input v-else type="text" size="small" v-model="tmpPass" autocomplete="off" :placeholder="placeholder.pass"></el-input>
       </el-form-item>
       <div style="margin-left: 25px;">
