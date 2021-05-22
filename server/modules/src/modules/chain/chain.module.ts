@@ -8,8 +8,11 @@ import { OptionsEntity } from 'src/entity/options.entity';
 
 import {EmailModule} from 'src/modules/email/email.module';
 
+import { RateLimiterModule } from 'nestjs-rate-limiter';
+
 @Module({
   imports: [
+    RateLimiterModule,
     TypeOrmModule.forFeature([ ChainEntity, OptionsEntity ]),
     EmailModule
   ],
