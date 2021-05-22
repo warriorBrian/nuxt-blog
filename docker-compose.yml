@@ -1,0 +1,50 @@
+version: "3.3"
+services:
+  nuxt:
+    container_name: nuxt
+    build: './nuxt'
+    restart: always
+    ports:
+      - 80:8083
+    depends_on:
+      - server
+  manage-ui:
+    container_name: manage-ui
+    build: './manage-ui'
+    restart: always
+    ports:
+      - 8085:8080
+    depends_on:
+      - server
+  server:
+    container_name: server
+    build: './server'
+    restart: always
+    ports:
+      - 3000:3000
+      - 3002:3002
+    depends_on:
+      - mysql
+      - redis
+  redis:
+    container_name: redis
+    image: redis
+    restart: always
+    ports:
+      - 6379:6379
+  mysql:
+    container_name: mysql
+    image: mariadb
+    restart: always
+    command: [
+      '--character-set-server=utf8mb4',
+      '--collation-server=utf8mb4_unicode_ci'
+    ]
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: "root"
+      MYSQL_DATABASE: "blog"
+    volumes:
+      - "/etc/localtime:/etc/localtime"
+      - "/opt/volumes/mysql:/var/lib/mysql"
