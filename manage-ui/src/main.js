@@ -22,7 +22,7 @@ import convertURL from "./plugins/core/lib/internal/convertURI";
 import renderExpand from './plugins/core/components/render-expand'
 // socket
 import Socket from './plugins/socket';
-Vue.use(new Socket('ws://localhost:3000'));
+Vue.use(new Socket(`ws://${process.env.VUE_APP_PROXY_ADDRESS}`));
 Vue.use(mavonEditor);
 Vue.prototype.$eventBus = new Vue();
 Vue.component('popconfirm', popconfirm);

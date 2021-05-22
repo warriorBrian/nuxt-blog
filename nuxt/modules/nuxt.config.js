@@ -16,6 +16,7 @@ export default {
     ]
   },
   server: {
+    host: '0.0.0.0',
     port: 8083
   },
   // Global CSS: https://go.nuxtjs.dev/config-css
@@ -53,7 +54,7 @@ export default {
   },
   proxy: {
     '/api': {
-      target: process.env.PROXY_ADDRESS,
+      target: process.env.NODE_ENV === 'development' ? process.env.PROXY_ADDRESS : process.env.PROD_PROXY_ADDRESS,
       changeOrigin: true
     }
   },
