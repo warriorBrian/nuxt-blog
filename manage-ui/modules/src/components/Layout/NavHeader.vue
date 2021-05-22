@@ -2,10 +2,10 @@
   <div class="doshBoard-layout-header">
     <!--animate__animated animate__rubberBand animate__faster-->
     <div class="router-name">{{this.$route.meta.title}}</div>
-    <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal">
-      <el-submenu index="2" class="doshBoard-layout-header-userInfo">
+    <el-menu :default-active="activeIndex" class="layout-menu" mode="horizontal">
+      <el-submenu index="1" class="doshBoard-layout-header-userInfo" :popper-append-to-body="true" popper-class="layout-menu-sub">
         <template slot="title">{{username}}</template>
-        <el-menu-item index="2-1">退出</el-menu-item>
+        <el-menu-item index="1-1" @click="logoutHandle" style="text-align: center">退出</el-menu-item>
       </el-submenu>
     </el-menu>
   </div>
@@ -25,6 +25,13 @@ export default {
   created () {
     const { username } = session.getItem('user_info');
     this.username = username;
+  },
+  methods: {
+    logoutHandle () {
+      session.removeItem('access_token');
+      session.removeItem('user_info');
+      this.$router.push({ name: 'login' });
+    }
   }
 }
 </script>

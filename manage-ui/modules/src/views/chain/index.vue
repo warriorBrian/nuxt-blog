@@ -122,6 +122,7 @@ export default {
   },
   created () {
     this.getChainListsHandle();
+    this.getChainStatusHandle();
   },
   filters: {
     coverTime (data) {
@@ -156,6 +157,19 @@ export default {
     filterChainStatusChangeHandle () {
       this.getChainListsHandle();
     },
+    // 获取友链状态
+    async getChainStatusHandle () {
+      const { data: { data } } = await this.$axios.get('/chain/status');
+      this.switchValue = data.status;
+    },
+    // 修改友链开启关闭状态
+    async changeChainHandle (status) {
+      const { data } = await this.$axios.post('/chain/status', { status });
+      if (success(data.code)) {
+        this.$notify({ title: '成功', message: data.message, type: 'success' });
+        this.getChainStatusHandle();
+      }
+    },
     // switch change
     chainSwitchChangeHandle (status) {
       const switchMapping = {
@@ -167,6 +181,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
+        this.changeChainHandle(status);
       }).catch(() => {
         this.switchValue = Number(!status);
       });
