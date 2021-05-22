@@ -1,9 +1,9 @@
 {
   "type": "mysql",
-  "host": "10.0.80.60",
+  "host": "mysql",
   "port": 3306,
   "username": "root",
-  "password": "brian",
+  "password": "root",
   "database": "blog",
   "migrationsTableName": "migrations",
   "entities": ["dist/**/*.entity{.ts,.js}"],

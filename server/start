@@ -1,0 +1,9 @@
+#!/bin/sh
+
+cd /opt/server/
+
+echo "执行migration进行数据库迁移"
+
+typeorm migration:run
+
+exec "$@"
