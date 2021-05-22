@@ -3,7 +3,7 @@ import { dateProcess } from 'src/core/lib';
 import { SubscribeMessage, WebSocketGateway, WebSocketServer} from '@nestjs/websockets';
 import { Server } from 'ws';
 
-@WebSocketGateway()
+@WebSocketGateway(3002)
 export class PrometheusGateway {
   private address = process.env['PROMETHEUS_ADDRESS'];
   private instance = process.env['PROMETHEUS_INSTANCE'];
