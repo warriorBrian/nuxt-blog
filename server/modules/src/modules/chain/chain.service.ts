@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { ChainEntity } from 'src/entity/chain.entity';
 import { OptionsEntity } from 'src/entity/options.entity';
 import {plainToClass} from 'class-transformer';
+import { MESSAGES } from 'src/core/enums/message.enum';
 
 import {EmailService} from 'src/modules/email/email.service';
 
@@ -48,6 +49,12 @@ export class ChainService {
    * @desc 创建链接
    * */
   public async createChainHandle ({ name, link, avatarLink, email }) {
+    // 获取友链开启关闭状态
+    const { status } = await this.auditStatusHandle();
+    if (!status) {
+      // 关闭友链
+      throw new BadRequestException(MESSAGES.CHAIN_POST_CLOSE);
+    }
     const findDuplicate = await this.chainRepository.findOne({ name });
     if (findDuplicate) {
       throw new BadRequestException('此链接名称已经存在');

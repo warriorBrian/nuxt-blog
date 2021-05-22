@@ -10,5 +10,6 @@ export enum MESSAGES {
   FILE_NOT_EXISTS_ERROR = '文件不存在',
   NOT_SUPPORT_OTHER_METHOD = '暂不支持其他方式',
   TAG_NAME_ALREADY_EXISTS_ERROR = '标签名称已存在',
-  DATA_ALREADY_EXISTS_ERROR = '数据已经存在'
+  DATA_ALREADY_EXISTS_ERROR = '数据已经存在',
+  CHAIN_POST_CLOSE = '提交友链功能已经关闭'
 }

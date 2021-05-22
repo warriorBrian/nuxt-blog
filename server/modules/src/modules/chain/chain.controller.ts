@@ -1,7 +1,8 @@
-import {Controller, Get, Post, Query, Body, UsePipes, Delete} from '@nestjs/common';
+import {Controller, Get, Post, Query, Body, UsePipes, Delete, UseInterceptors} from '@nestjs/common';
 import {ChainService} from './chain.service';
 import {AuthStrategy} from 'src/auth/auth.decorator';
 import { ValidateToEmptyPipe } from 'src/pipe/validateToEmptyPipe.pipe';
+import { RateLimit, RateLimiterInterceptor } from 'nestjs-rate-limiter';
 
 @Controller('chain')
 export class ChainController {
@@ -31,6 +32,8 @@ export class ChainController {
    * @desc 创建链接
    * */
   @Post()
+  @RateLimit({ points: 1, duration: 60})
+  @UseInterceptors(RateLimiterInterceptor)
   @UsePipes(new ValidateToEmptyPipe([ 'name', 'link', 'avatarLink', 'email' ]))
   protected createChainHandle (@Body() body) {
     return this.chainService.createChainHandle(body);
