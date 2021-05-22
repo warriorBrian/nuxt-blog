@@ -31,7 +31,6 @@ export class ChainController {
    * @desc 创建链接
    * */
   @Post()
-  @AuthStrategy()
   @UsePipes(new ValidateToEmptyPipe([ 'name', 'link', 'avatarLink', 'email' ]))
   protected createChainHandle (@Body() body) {
     return this.chainService.createChainHandle(body);
@@ -58,6 +57,24 @@ export class ChainController {
   @UsePipes(new ValidateToEmptyPipe([ 'id', 'status', 'suggest', 'email', 'pushEmail' ]))
   protected auditChainHandle (@Body() body) {
     return this.chainService.auditChainHandle(body);
+  }
+
+  /**
+   * @desc 获取友链提交开启关闭状态
+   * */
+  @Get('status')
+  protected auditStatusHandle () {
+    return this.chainService.auditStatusHandle();
+  }
+
+  /**
+   * @desc 友链提交开启关闭
+   * */
+  @Post('status')
+  @AuthStrategy()
+  @UsePipes(new ValidateToEmptyPipe([ 'status' ]))
+  protected auditChangeStatusHandle (@Body() body) {
+    return this.chainService.auditChangeStatusHandle(body);
   }
 
 }

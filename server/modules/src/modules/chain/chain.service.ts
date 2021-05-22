@@ -3,6 +3,7 @@ import { Injectable, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ChainEntity } from 'src/entity/chain.entity';
+import { OptionsEntity } from 'src/entity/options.entity';
 import {plainToClass} from 'class-transformer';
 
 import {EmailService} from 'src/modules/email/email.service';
@@ -11,6 +12,7 @@ import {EmailService} from 'src/modules/email/email.service';
 export class ChainService {
   constructor(
     @InjectRepository(ChainEntity) private readonly chainRepository: Repository<ChainEntity>,
+    @InjectRepository(OptionsEntity) private readonly optionsRepository: Repository<OptionsEntity>,
     private readonly emailService: EmailService
   ) {}
 
@@ -102,6 +104,23 @@ export class ChainService {
       .set(value)
       .where('chain.id =:id', { id })
       .execute();
+    return { message: `成功修改${affected}条` };
+  }
+
+  /**
+   * @desc 获取友链提交开启关闭状态
+   * */
+  public async auditStatusHandle () {
+    const { value } = await this.optionsRepository.findOne({ key: 'chain_status' });
+    return { status: value };
+  }
+  /**
+   * @desc 友链提交开启关闭
+   * */
+  public async auditChangeStatusHandle ({ status }) {
+    const { affected } = await this.optionsRepository.update({ key: 'chain_status' }, {
+      key: 'chain_status', value: status
+    });
     return { message: `成功修改${affected}条` };
   }
 
