@@ -40,7 +40,6 @@ export default {
     await this.getBannerData();
     await this.getSiteMetaConfig();
     await this.getArticleLists();
-    console.log(process.env.PROXY_ADDRESS, 'abcd');
   },
   head () {
     return {

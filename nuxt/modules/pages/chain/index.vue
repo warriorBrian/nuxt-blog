@@ -19,16 +19,21 @@
       <section v-if="!chainLists.length" class="chain-empty">
         <empty>友链页面空空如也~</empty>
       </section>
+      <no-ssr>
+        <post-chain></post-chain>
+      </no-ssr>
     </section>
   </div>
 </template>
 <script>
 import customBanner from '~/layouts/custom-banner';
-import empty from '~/components/empty'
+import empty from '~/components/empty';
+import postChain from '~/components/post-chain';
 export default {
   components: {
     customBanner,
-    empty
+    empty,
+    postChain
   },
   data () {
     return {
