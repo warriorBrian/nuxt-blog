@@ -1,0 +1,36 @@
+version: "3.3"
+services:
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    restart: always
+    ports:
+      - 9090:9090
+    user: root
+    volumes:
+     - './prometheus.yml:/etc/prometheus/prometheus.yml'
+  node_exporter:
+    image: prom/node-exporter
+    container_name: node_exporter
+    restart: always
+    network_mode: host
+    pid: host
+    user: root
+    volumes:
+     - '/proc:/host/proc:ro'
+     - '/sys:/host/sys:ro'
+     - '/:/rootfs:ro'
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    restart: always
+    ports:
+      - 3001:3001
+    user: root
+    volumes:
+     - '/opt/grafana-storage:/var/lib/grafana'
+     - './grafana.ini:/etc/grafana/grafana.ini'
+networks:
+  default:
+    external:
+      name: custom_network
