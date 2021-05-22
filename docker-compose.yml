@@ -8,6 +8,9 @@ services:
       - 80:8083
     depends_on:
       - server
+    volumes:
+      - "/opt/uploads/site:/opt/builder/static/site"
+      - "/opt/uploads/images:/opt/builder/static/images"
   manage-ui:
     container_name: manage-ui
     build: './manage-ui'
@@ -16,6 +19,8 @@ services:
       - 8085:8080
     depends_on:
       - server
+    volumes:
+      - "/opt/uploads:/opt/default/dist/static"
   server:
     container_name: server
     build: './server'
@@ -26,6 +31,8 @@ services:
     depends_on:
       - mysql
       - redis
+    volumes:
+      - "/opt/uploads:/opt/server/uploads"
   redis:
     container_name: redis
     image: redis
@@ -47,4 +54,4 @@ services:
       MYSQL_DATABASE: "blog"
     volumes:
       - "/etc/localtime:/etc/localtime"
-      - "/opt/volumes/mysql:/var/lib/mysql"
+      - "/opt/test1/mysql:/var/lib/mysql"

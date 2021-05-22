@@ -31,8 +31,8 @@ export default {
         name: '',
         createdAt: ''
       },
-      defaultBanner: '/images/archive-detail-banner.jpeg',
-      defaultArticleBackground: '/images/article-bg.jpg',
+      defaultBanner: '/image/archive-detail-banner.jpeg',
+      defaultArticleBackground: '/image/article-bg.jpg',
       banner: '',
       articleLists: []
     }

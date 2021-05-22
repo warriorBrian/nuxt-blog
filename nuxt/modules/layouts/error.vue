@@ -92,7 +92,7 @@ export default {
     & .error-access-gif {
       width: 350px;
       height: 500px;
-      background: url('~static/images/403.gif') no-repeat;
+      background: url('~static/image/403.gif') no-repeat;
     }
   }
   /* 404 */
@@ -102,7 +102,7 @@ export default {
       height: 500px;
       background-size: cover;
       background-position: center;
-      background:url('~static/images/404.jpg') no-repeat;
+      background:url('~static/image/404.jpg') no-repeat;
     }
     & .error-not-found-back {
       text-decoration: none;
@@ -123,7 +123,7 @@ export default {
       height: 500px;
       background-size: cover;
       background-position: center;
-      background:url('~static/images/50x.jpg') no-repeat;
+      background:url('~static/image/50x.jpg') no-repeat;
     }
   }
 }

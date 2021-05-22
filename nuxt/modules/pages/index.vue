@@ -97,7 +97,7 @@ export default {
     margin: 2rem auto 1.25rem;
     padding: 2rem 0 1.25rem;
     & .dynamic-bg {
-      background-image: url("~static/images/article-bg.jpg") !important;
+      background-image: url("~static/image/article-bg.jpg") !important;
     }
     & .card-content {
       width: 100%;

@@ -22,7 +22,7 @@ export default {
     flex-direction: column;
   }
   .icon-empty-data {
-    background-image: url("~/static/images/empty-color.svg");
+    background-image: url("~/static/image/empty-color.svg");
     background-repeat: no-repeat;
     display:block;
   }

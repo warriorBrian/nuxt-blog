@@ -39,7 +39,7 @@ export default {
   },
   data () {
     return {
-      defaultArticleBackground: '/images/article-bg.jpg'
+      defaultArticleBackground: '/image/article-bg.jpg'
     }
   },
   methods: {
