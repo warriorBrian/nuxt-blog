@@ -9,8 +9,7 @@ services:
     depends_on:
       - server
     volumes:
-      - "/opt/uploads/site:/opt/builder/static/site"
-      - "/opt/uploads/images:/opt/builder/static/images"
+      - "/opt/volumes/uploads:/opt/builder/static/static"
   manage-ui:
     container_name: manage-ui
     build: './manage-ui'
@@ -20,7 +19,7 @@ services:
     depends_on:
       - server
     volumes:
-      - "/opt/uploads:/opt/default/dist/static"
+      - "/opt/volumes/uploads:/opt/default/dist/static"
   server:
     container_name: server
     build: './server'
@@ -32,7 +31,7 @@ services:
       - mysql
       - redis
     volumes:
-      - "/opt/uploads:/opt/server/uploads"
+      - "/opt/volumes/uploads:/opt/server/uploads"
   redis:
     container_name: redis
     image: redis
@@ -54,4 +53,4 @@ services:
       MYSQL_DATABASE: "blog"
     volumes:
       - "/etc/localtime:/etc/localtime"
-      - "/opt/test1/mysql:/var/lib/mysql"
+      - "/opt/volumes/mysql:/var/lib/mysql"
