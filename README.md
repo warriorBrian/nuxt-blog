@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="brianlee.cn" target="blank"><img src="./manage-ui/modules/src/assets/logo.svg" width="400" alt="nuxt-blog" /></a>
+  <a href="http://brianlee.cn" target="blank"><img src="./manage-ui/modules/src/assets/logo.svg" width="400" alt="nuxt-blog" /></a>
 </p>
 
 <p align="center">
