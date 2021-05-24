@@ -114,3 +114,13 @@ $ docker-compose up -d
 默认后台登录密码: 123
 
 请在登录后进行创建账号密码，重新登录并删除测试默认账号密码。
+
+#### 相关文档:
+
+* server相关说明文档: [server文档](https://github.com/warriorBrian/nuxt-blog/tree/master/server/modules)
+
+* nuxt相关说明文档: [nuxt文档](https://github.com/warriorBrian/nuxt-blog/tree/master/nuxt/modules)
+
+* manage-ui相关说明文档: [manage-ui文档](https://github.com/warriorBrian/nuxt-blog/tree/master/manage-ui/modules)
+
+* prometheus相关说明文档: [prometheus文档](https://github.com/warriorBrian/nuxt-blog/tree/master/prometheus)
