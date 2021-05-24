@@ -65,7 +65,9 @@ VUE_APP_WS_ADDRESS=ws://服务器IP:3002
 PROMETHEUS_ADDRESS=http://服务器IP:9090
 ```
 
-将prometheus地址设置为部署服务器IP，并暴露9090, 9100端口.
+将地址设置为部署服务器IP，并暴露9090, 9100端口.
+
+prometheus相关文档: [prometheus部署文档](https://github.com/warriorBrian/nuxt-blog/tree/master/prometheus)
 
 3. 确认`server`中`ormconfig.json`配置是否正确:
 
