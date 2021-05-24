@@ -32,6 +32,7 @@ services:
       - redis
     volumes:
       - "/opt/volumes/uploads:/opt/server/uploads"
+      - "/etc/localtime:/etc/localtime"
   redis:
     container_name: redis
     image: redis
