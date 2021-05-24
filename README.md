@@ -42,17 +42,14 @@ $ npm install
 
 ```
 
-### 说明
-
-默认后台登录用户名: demo
-
-默认后台登录密码: 123
-
 ### 部署
 
 > 目前使用docker部署，请确保服务器已经安装`docker`及`docker-compose`
 
-进行服务打包，在docker中打包可能存在慢的情况，请耐心等待，如果出现网络问题，请多试几次。
+
+进行服务打包，在docker中打包可能存在慢的情况，请耐心等待，如果出现网络问题，请多试几次。
+
+
 
 1. 确认`manage-ui`中`.env`环境是否正确:
 
@@ -72,7 +69,7 @@ PROMETHEUS_ADDRESS=http://服务器IP:9090
 
 3. 确认`server`中`ormconfig.json`配置是否正确:
 
-```json
+```js
 {
   ...
   ...
@@ -107,3 +104,11 @@ $ docker-compose build
 ```sh
 $ docker-compose up -d
 ```
+
+### 说明
+
+默认后台登录用户名: demo
+
+默认后台登录密码: 123
+
+请在登录后进行创建账号密码，重新登录并删除测试默认账号密码。
