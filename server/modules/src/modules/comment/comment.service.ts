@@ -152,7 +152,7 @@ export class CommentService {
    * @param data {Object} email, content article_id
    * @return create result
    * */
-  public async createComment (data) {
+  public async createComment (data, getHeadersIp) {
     const { email, content, article_id, username, captcha } = data;
     const value = await this.optionsRepository.createQueryBuilder('options')
       .select(['options.key', 'options.value'])
@@ -189,8 +189,12 @@ export class CommentService {
         throw new BadRequestException(MESSAGES.WEBSERVICE_KEY_EMPTY);
       }
       // 获取IP地址,IP解析实际地址
-      const {query_ip_location: { result: {ip} }, detail_location: { result: { address } } } = await this.locationService.getLocation();
-      Object.assign(params, {ip, address});
+      if (getHeadersIp) {
+        const {query_ip_location: { result: {ip} }, detail_location: { result: { address } } } = await this.locationService.getLocation(getHeadersIp);
+        Object.assign(params, {ip, address});
+      } else {
+        Object.assign(params, {ip: '无法获取', address: '无法获取'});
+      }
     }
     // 过滤空格，转换小写
     const text = content.toLowerCase().replace(/\s*/g, '');

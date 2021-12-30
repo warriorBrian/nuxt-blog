@@ -39,13 +39,17 @@ export default {
     return {
       tagLists: [],
       archiveLists: {},
-      list: {}
+      list: {},
+      headerConfigs: {}
     }
   },
   async fetch () {
-    await this.getBannerData();
     await this.getTagLists();
     await this.getArchiveLists();
+  },
+  async created () {
+    await this.getIpLocation();
+    await this.getBannerData();
   },
   head () {
     return {
@@ -56,12 +60,23 @@ export default {
     // 获取banner数据
     async getBannerData () {
       try {
-        const { data: { data } } = await this.$axios.get('/site-config/list', {});
+        const { data: { data } } = await this.$axios.get('/site-config/list', { headers: { ...this.headerConfigs } });
         // 查找数据与路由进行对应
         const index = data.list.findIndex(v => v.link === this.$route.path);
         this.list = data.list[index];
       } catch (e) {
         this.$nuxt.error({ ...e.response.data });
+      }
+    },
+    async getIpLocation () {
+      // 获取请求IP地址
+      if (process.browser) {
+        try {
+          const { data: { query, country, city } } = await this.$axios.get('http://ip-api.com/json', {});
+          this.headerConfigs = { ip: query || '', city: city || '', country: country || '' };
+        } catch (e) {
+          this.headerConfigs = {};
+        }
       }
     },
     async getTagLists () {

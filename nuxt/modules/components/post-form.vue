@@ -149,13 +149,17 @@ export default {
           { validator: validateCaptcha, trigger: 'blur', required: true }
         ]
       },
-      comment_status: 1
+      comment_status: 1,
+      comment_record_ip: 0,
+      headerConfigs: {}
     }
   },
   async fetch () {
     await this.getGeetestCaptcha();
     // 评论开启状态
     await this.getCommentStatus();
+    // 根据记录IP状态决定是否调用获取IP地址
+    this.comment_record_ip && await this.getIpLocation();
   },
   methods: {
     async getCommentStatus () {
@@ -164,6 +168,19 @@ export default {
         this.placeholder = { username: '', email: '', content: '评论已关闭' };
       }
       this.comment_status = data.comment_status;
+      this.comment_record_ip = data.comment_record_ip;
+    },
+    async getIpLocation () {
+      // 获取请求IP地址
+      console.log('调用获取IP');
+      if (process.browser) {
+        try {
+          const { data: { query, country, city } } = await this.$axios.get('http://ip-api.com/json', {});
+          this.headerConfigs = { ip: query || '', city: city || '', country: country || '' };
+        } catch (e) {
+          this.headerConfigs = {};
+        }
+      }
     },
     submitForm (formName) {
       this.$refs[formName].validate((valid) => {
@@ -180,7 +197,7 @@ export default {
     },
     // 提交评论
     async postComment () {
-      const { data } = await this.$axios.post('/comment', { ...this.postModel, article_id: this.$route.params.id });
+      const { data } = await this.$axios.post('/comment', { ...this.postModel, article_id: this.$route.params.id }, { headers: { ...this.headerConfigs } });
       if (success(data.code)) {
         this.$notify({ title: '成功', message: '评论成功', type: 'success' });
         this.resetForm('postForm');

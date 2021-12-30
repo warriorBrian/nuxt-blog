@@ -12,8 +12,7 @@ import {LocationService} from 'src/modules/location/location.service';
 export class BlacklistMiddleware implements NestMiddleware {
   constructor(
     @InjectRepository(BlacklistEntity) private readonly blackRepository: Repository<BlacklistEntity>,
-    @InjectRepository(OptionsEntity) private readonly optionRepository: Repository<OptionsEntity>,
-    private readonly locationService: LocationService
+    @InjectRepository(OptionsEntity) private readonly optionRepository: Repository<OptionsEntity>
   ) {}
 
   private async deleteBlackList (id) {
@@ -32,15 +31,18 @@ export class BlacklistMiddleware implements NestMiddleware {
       return false;
     }
     const nowTime = Number(Math.round(new Date().getTime()/1000));
-    const { query_ip_location: { result } } = await this.locationService.getLocation();
-    const blacklist = await this.blackRepository.findOne({ip: result.ip});
-    if (blacklist) {
-      // 时间过期则删除，否则更新次数
-      if (nowTime > blacklist.exp) {
-        this.deleteBlackList(blacklist.id)
-      } else {
-        this.updateBlackListCount(result.ip, blacklist.count + 1);
-        throw new ForbiddenException('访问被拒绝');
+    // 通过前端来传递访问ip
+    const ip: any = request.headers['ip'];
+    if (ip) {
+      const blacklist = await this.blackRepository.findOne({ip});
+      if (blacklist) {
+        // 时间过期则删除，否则更新次数
+        if (nowTime > blacklist.exp) {
+          this.deleteBlackList(blacklist.id)
+        } else {
+          this.updateBlackListCount(ip, blacklist.count + 1);
+          throw new ForbiddenException('访问被拒绝');
+        }
       }
     }
     next();

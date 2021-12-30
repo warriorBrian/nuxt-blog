@@ -33,13 +33,12 @@ export default {
         author: ''
       },
       count: 0,
-      list: {}
+      list: {},
+      headerConfigs: {}
     }
   },
   async fetch () {
-    await this.getBannerData();
     await this.getSiteMetaConfig();
-    await this.getArticleLists();
   },
   head () {
     return {
@@ -51,11 +50,16 @@ export default {
       ]
     }
   },
+  async created () {
+    await this.getIpLocation();
+    await this.getBannerData();
+    await this.getArticleLists();
+  },
   methods: {
     // 获取banner数据
     async getBannerData () {
       try {
-        const { data: { data } } = await this.$axios.get('/site-config/list', {});
+        const { data: { data } } = await this.$axios.get('/site-config/list', { headers: { ...this.headerConfigs } });
         // 查找数据与路由进行对应
         const index = data.list.findIndex(v => v.link === this.$route.path);
         this.list = data.list[index];
@@ -67,6 +71,17 @@ export default {
     async getSiteMetaConfig () {
       const { data: { data } } = await this.$axios.get('/site-config/site');
       this.meta = data;
+    },
+    async getIpLocation () {
+      // 获取请求IP地址
+      if (process.browser) {
+        try {
+          const { data: { query, country, city } } = await this.$axios.get('http://ip-api.com/json', {});
+          this.headerConfigs = { ip: query || '', city: city || '', country: country || '' };
+        } catch (e) {
+          this.headerConfigs = {};
+        }
+      }
     },
     // 获取文章列表渲染
     async getArticleLists () {
