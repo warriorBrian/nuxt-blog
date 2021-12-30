@@ -1,4 +1,4 @@
-import {Controller, Post, Body, Query, Get, UsePipes, Delete, UploadedFile, UseInterceptors, HttpService} from '@nestjs/common';
+import {Controller, Post, Body, Query, Get, UsePipes, Delete, UploadedFile, UseInterceptors, HttpService, Headers} from '@nestjs/common';
 import {CommentService} from './comment.service';
 import {AuthStrategy} from 'src/auth/auth.decorator';
 import {ValidateToEmptyPipe} from 'src/pipe/validateToEmptyPipe.pipe';
@@ -53,8 +53,8 @@ export class CommentController {
   @UsePipes(new ValidateToEmptyPipe([ 'email', 'username', 'content', 'article_id' ]))
   @RateLimit({ points: 5, duration: 60})
   @UseInterceptors(RateLimiterInterceptor)
-  protected createComment (@Body() body) {
-    return this.commentService.createComment(body);
+  protected createComment (@Body() body, @Headers('ip') ip) {
+    return this.commentService.createComment(body, ip);
   }
 
   /**
@@ -76,7 +76,7 @@ export class CommentController {
    * */
   @Get('/switch')
   protected getCommentSwitchStatus () {
-    return this.commentService.getCommentSwitchStatus(['comment_status']);
+    return this.commentService.getCommentSwitchStatus(['comment_status', 'comment_record_ip']);
   }
   /**
    * @desc 获取评论开启状态及记录IP状态
