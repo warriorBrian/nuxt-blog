@@ -4,16 +4,16 @@
     <section>
       <el-form :model="postChainModel" status-icon ref="postChain" :rules="rules" label-position="top" label-width="80px" class="post-chain">
         <el-form-item label="姓名" prop="name">
-          <el-input v-model.number="postChainModel.name" size="small" :placeholder="placeholder.name"></el-input>
+          <el-input v-model="postChainModel.name" size="small" :placeholder="placeholder.name"></el-input>
         </el-form-item>
         <el-form-item label="链接" prop="link">
-          <el-input v-model.number="postChainModel.link" size="small" :placeholder="placeholder.link"></el-input>
+          <el-input v-model="postChainModel.link" size="small" :placeholder="placeholder.link"></el-input>
         </el-form-item>
         <el-form-item label="邮箱" prop="email">
-          <el-input v-model.number="postChainModel.email" size="small" :placeholder="placeholder.email"></el-input>
+          <el-input v-model="postChainModel.email" size="small" :placeholder="placeholder.email"></el-input>
         </el-form-item>
         <el-form-item label="头像链接" prop="avatarLink">
-          <el-input v-model.number="postChainModel.avatarLink" size="small" :placeholder="placeholder.avatarLink"></el-input>
+          <el-input v-model="postChainModel.avatarLink" size="small" :placeholder="placeholder.avatarLink"></el-input>
         </el-form-item>
         <el-form-item class="post-chain-btn">
           <el-button type="info" size="small" @click="postChainSubmitHandle('postChain')">提 交</el-button>
