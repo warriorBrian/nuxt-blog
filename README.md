@@ -124,3 +124,6 @@ $ docker-compose up -d
 * manage-ui相关说明文档: [manage-ui文档](https://github.com/warriorBrian/nuxt-blog/tree/master/manage-ui/modules)
 
 * prometheus相关说明文档: [prometheus文档](https://github.com/warriorBrian/nuxt-blog/tree/master/prometheus)
+
+### 鸣谢
+[WebStorm](https://www.jetbrains.com) - 感谢 JetBrains 团队提供的集成开发环境。
